@@ -1,0 +1,213 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<br>
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-12">
+			<h2>THAI WORDCLOUD GENERATOR</h2>
+			<p>
+				paste text below OR upload text file (&lt;2MB)
+				　<a href="javascript:void(0);" data-toggle="modal" data-target="#example1">example</a>
+			</p>
+			<form action="/wordcloud" method="POST" enctype="multipart/form-data" onsubmit="return validate_form_wordcloud();">
+				<div class="btn-group mb-1">
+					<button type="submit" class="btn btn-secondary">generate</button>
+					<button type="reset" class="btn btn-outline-secondary" onclick="input_text.value=''; this.blur(); input_text.focus()">clear</button>
+				</div>
+				<div class="btn-group mb-1">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text">font</span>
+						</div>
+						<select class="form-control" name="font" id="font_select" onchange="change_font();">
+							<option value="Sarabun">Sarabun</option>
+							<option value="Kanit">Kanit</option>
+							<option value="Baijam">Baijam</option>
+							<option value="Mali6">Mali Grade 6</option>
+							<option value="Niramit">Niramit</option>
+							<option value="Chonburi">Chonburi</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-check form-check-inline ml-2">
+					<div class="custom-control custom-switch">
+						<input type="checkbox" class="custom-control-input" name="tokenize" id="tokenize" checked>
+						<label class="custom-control-label" for="tokenize" data-toggle="tooltip" data-placement="top" data-html="true"
+							title="whether tokenize text or not<br>if not tokenize, words in each line must be delimited by comma/space/tab">tokenize</label>
+					</div>
+					<div class="custom-control custom-switch ml-3">
+						<input type="checkbox" class="custom-control-input" name="remove_stop" id="remove_stop" checked>
+						<label class="custom-control-label" for="remove_stop" data-toggle="tooltip" data-placement="top" data-html="true"
+							title="remove Thai stopwords<br>e.g. ไม่ ที่ และ (recommended)">remove stopwords</label>
+					</div>
+				</div>
+				<div class="card  border-secondary mb-1">
+					<div class="card-header pointer" onclick="show_hide('advanced_option');">
+						▼ advanced options (click to open)
+					</div>
+					<div class="card-body bg-light" id="advanced_option" style="display: none;">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">maximum words</span>
+							</div>
+							<input type="text" class="form-control" name="maxword" id="maxword" value="300" autocomplete="off">
+							<div class="input-group-prepend">
+								<span class="input-group-text" data-toggle="tooltip" data-placement="top" title="select color OR input HEX code">background color</span>
+							</div>
+							<select class="form-control" name="bgcolor" id="bgcolor" onchange="change_color_select();">
+								<option value="white" selected>white</option>
+								<option value="black">black</option>
+								<!-- <option value="transparent">transparent</option> -->
+								<option value="lightblue">lightblue</option>
+								<option value="lightgreen">lightgreen</option>
+								<option value="lightyellow">lightyellow</option>
+								<option value="lightgrey">lightgrey</option>
+								<option value="lightskyblue">lightskyblue</option>
+								<option value="lightpink">lightpink</option>
+								<option value="lightcyan">lightcyan</option>
+								<option value="lavender">lavender</option>
+								<option value="honeydew">honeydew</option>
+								<option value="mistyrose">mistyrose</option>
+								<option value="lavenderblush">lavenderblush</option>
+								<option value="azure">azure</option>
+								<option value="lemonchiffon">lemonchiffon</option>
+								<option value="navajowhite">navajowhite</option>
+							</select>
+							<input type="text" class="form-control" name="bgcolor16" id="bgcolor16" placeholder="#FFFFFF" autocomplete="off" maxlength="7" oninput="change_color_hex();">
+						</div>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">shape</span>
+							</div>
+							<select class="form-control" name="maskshape">
+								<option value="none">rectangle (width px * height px)</option>
+								<option value="oval">oval (1200 * 800)</option>
+								<option value="heart">heart (1300 * 1300)</option>
+								<option value="star">star (1000 * 1000)</option>
+								<option value="watarun">Wat Arun (1000 * 1000)</option>
+								<option value="thai">Thailand (600 * 1105)</option>
+							</select>
+						</div>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">width px</span>
+							</div>
+							<input type="text" class="form-control" name="width" id="widthpx" value="1500" autocomplete="off">
+							<div class="input-group-prepend">
+								<span class="input-group-text">height px</span>
+							</div>
+							<input type="text" class="form-control" name="height" id="heightpx" value="1000" autocomplete="off">
+						</div>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">words to exclude</span>
+							</div>
+							<input type="text" class="form-control" name="stopwords" id="stopwords" placeholder="words delimited by comma or space" autocomplete="off">
+						</div>
+					</div>
+				</div>
+				<textarea class="form-control" name="text" rows="4" id="input_text" style="width:100%;"></textarea>
+				<input type="file" name="file" id="input_file" accept="text/*" class="form-control-file mt-1" onchange="validate_file();">
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL : example -->
+<div class="modal fade" id="example1" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">example</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="static/img/wordcloud_example.png" style="width:100%;">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if pngpath %}
+<br>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card border-secondary">
+				<div class="card-body">
+					<img src={{ pngpath }} style="width: 100%;">
+				</div>
+				<div class="card-footer">
+					<a href={{ pngpath }} download>
+						<button class="btn btn-secondary">download .png</button>
+					</a>
+					<a href={{ svgpath }} download>
+						<button class="btn btn-secondary">download .svg</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	// re-set input form
+	text = {{ text|tojson }};
+	input_text.value = text;
+	stops = {{ stopwords|tojson }} 
+	stopwords.value = stops;
+</script>
+{% endif %}
+
+<script>
+	function validate_form_wordcloud(){
+		if(input_file.value.length==0 && input_text.value.trim()==''){
+			input_text.value = '';
+			input_text.focus();
+			return false;
+		}else if(input_file.value.length==0 && input_text.value.trim().length>100000){
+			alert('the text is too long');
+			return false;
+		}else if(widthpx.value > 3000 || heightpx.value > 3000){
+			alert('the picture size is too large (>3000)');
+			return false;
+		}else if(maxword.value > 1500){
+			alert('the max words is too many (>1500)');
+			return false;
+		}else{
+			return true;
+		}
+	}
+	function change_font(){
+		let font = font_select.value;
+		if(['Baijam','Mali6'].includes(font)){
+			input_text.style.fontSize = "140%";
+		}else{
+			input_text.style.fontSize = "100%";
+		}
+		input_text.style['font-family'] = font;
+	}
+	function change_color_select(){
+		let color = bgcolor.value;
+		if(color !== 'black'){
+			input_text.style.backgroundColor = color;
+		}
+	}
+	function change_color_hex(){
+		let color = bgcolor16.value;
+		if(color.match(/#[\dA-Fa-f]{6}$/)){
+			input_text.style.backgroundColor = color;
+		}else{
+			input_text.style.backgroundColor = bgcolor.value;
+		}
+	}
+	
+	mode_wordcloud.classList.add('active');
+</script>
+
+{% endblock %}

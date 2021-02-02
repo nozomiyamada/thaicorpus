@@ -1,0 +1,27 @@
+{% extends "true.html" %}
+{% block true_result %}
+    {% if drama == 'ploy' %}
+        <h2>Unlucky Ploy <a href="https://movie.trueid.net/series/Xoqe3ZMeXJKo/G2Q7NeaZRJdr" target="_blank">video link</a></h2>
+    {% elif drama == 'ngaojai' %}
+        <h2>เงาใจ</h2>
+    {% endif %}
+{% for row in df %}
+<h3>ตอน {{ row[1] }}　หน้า {{ row[2] }}/{{ row[3] }}</h3>
+<a href="{{ row[4] }}" target="_blank">link</a>
+<button onclick="show_hide();">show/hide script</button>
+<p style="display: none; margin:10px 20px">
+    {{ row[0]|safe }}
+</p>
+{% endfor %}
+<script>
+    function show_hide(){
+        elem = event.target.nextElementSibling;
+        if(elem.style.display == "none"){
+            elem.style.display = "";
+        }else{
+            elem.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}
+

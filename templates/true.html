@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        span.red{
+            color:red;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div style="margin: 50px 50px">
+        <form action="/true" method="POST">
+            <select name="drama">
+                <option value='ploy' selected>Unlucky Ploy</option>
+                <option value='ngaojai'>เงาใจ</option>
+                <input type="submit" value="GO">
+            </select>
+        </form>
+        {% block true_result %}
+        {% endblock %}
+    </div>
+</body>
+</html>

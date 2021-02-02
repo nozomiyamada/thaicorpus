@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<br>
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-12">
+			<h2>THAI G2P</h2>
+			<h5>G2P (grapheme-to-phoneme) is the process to convert given text into pronounciation.</h5>
+			<p>e.g. ผมจะไปโรงเรียนพรุ่งนี้ -> phǒm càʔ pay rooŋ rian phrûŋ níi　(Haas' transcription system)</p>
+			<form action="/g2p" method="POST" onsubmit="return validate_form_g2p();">
+				<div class="btn-group mb-1">
+					<button class="btn btn-secondary" type="submit" onclick="validate_form_g2p();">convert</button>
+					<button class="btn btn-outline-secondary" type="reset" onclick="input_text.value=''; this.blur(); input_text.focus()">clear</button>
+				</div>
+				<div class="form-check form-check-inline ml-2">
+					<input class="form-check-input" type="radio" name="transcription" value="haas" id="radio1" checked>
+					<label class="form-check-label" for="radio1">Haas</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="transcription" value="ipa" id="radio2">
+					<label class="form-check-label" for="radio2">IPA</label>
+				</div>
+				<input class="form-control" name="text" rows="4" id="input_text" style="width:100%;" autocomplete="off">
+			</form>
+		</div>
+	</div>
+</div>
+
+{% if result %}
+<br>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card border-secondary">
+				<div class="card-header">
+					{{ text }}
+				</div>
+				<div class="card-body">
+					<h5 id="result">{{ result }}</h5>
+				</div>
+				<div class="card-footer">
+					<button class="btn btn-secondary" value="copy" onclick="copy();">copy</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	text = {{ text|tojson }};
+	radio_i = {{ radio_i|tojson }};
+	document.getElementsByName('transcription')[radio_i].checked = true;
+	input_text.value = text;
+</script>
+{% endif %}
+
+<script>
+	function validate_form_g2p(){
+		if(input_text.value.trim()==''){
+			input_text.value = '';
+			input_text.focus();
+			return false;
+		}else{
+			return true;
+		}
+	}
+	function copy(){
+    var temp_elem = document.createElement("textarea");
+    temp_elem.innerText = result.innerText;
+    var body_elem = document.getElementsByTagName("body")[0];
+    body_elem.appendChild(temp_elem);
+    temp_elem.select();
+    document.execCommand("Copy");
+    temp_elem.remove();
+	}
+	mode_g2p.classList.add('active');
+</script>
+
+{% endblock %}

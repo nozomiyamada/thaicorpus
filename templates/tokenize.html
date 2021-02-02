@@ -1,0 +1,134 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<br>
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-12">
+			<h2>THAI TOKENIZER</h2>
+			<p>paste text below OR upload text file (&lt;2MB)　--- powered by <a href="https://pypi.org/project/pythainlp/" target="_blank">PyThaiNLP</a> ---</p>
+			<form action="/tokenize" method="POST" enctype="multipart/form-data" onsubmit="return validate_form_tokenize();">
+				<div class="btn-group mb-1">
+					<button class="btn btn-secondary" type="submit">tokenize</button>
+					<button class="btn btn-outline-secondary" type="reset" onclick="input_text.value=''; this.blur(); input_text.focus()">clear</button>
+				</div>
+				<div class="form-check form-check-inline ml-2">
+					<div class="custom-control custom-switch">
+						<input type="checkbox" class="custom-control-input" name="keepspace" id="keepspace" checked>
+						<label class="custom-control-label" for="keepspace" data-toggle="tooltip" data-placement="top" data-html="true"
+							title="whether keep whitespaces or not<br>if unchecked, all whitespaces are removed in output">keep whitespaces</label>
+					</div>
+				</div>
+				<div class="card border-secondary mb-1">
+					<div class="card-header pointer" onclick="show_hide('advanced_option');">
+						▼ advanced options (click to open)
+					</div>
+					<div class="card-body bg-light" id="advanced_option" style="display: none;">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text" data-toggle="tooltip" data-placement="top" title="how to deal with whitespace">whitespace</span>
+							</div>
+							<select class="form-control" name="whitespace">
+								<option value="shrink" selected>shrink ("&nbsp;&nbsp;&nbsp;&nbsp;" -> " ")</option>
+								<option value="shrink2">shrink also ๆ ("จริง ๆ" -> "จริงๆ")</option>
+								<option value="keep">keep original length</option>
+							</select>
+							<div class="input-group-prepend">
+								<span class="input-group-text" data-toggle="tooltip" data-placement="top" title="how to deal with punctuation">punctuation</span>
+							</div>
+							<select class="form-control" name="punctuation">
+								<option value="remove" selected>remove () [] " ' , ; :</option>
+								<option value="keep">keep original</option>
+							</select>
+						</div>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text" data-toggle="tooltip" data-placement="top" title="tokenization engine in PyThaiNLP">engine</span>
+							</div>
+							<select class="form-control" name="engine">
+								<option value="newmm" selected>newmm (dictionary-based, faster)</option>
+								<option value="attacut" disabled>attacut (neural network, slower)</option>
+							</select>
+							<div class="input-group-prepend">
+								<span class="input-group-text" data-toggle="tooltip" data-placement="top" title="word delimiter in output">delimiter</span>
+							</div>
+							<select class="form-control" name="delimiter" id="delimiter">
+								<option value="vbar" selected>vbar |</option>
+								<option value="comma">comma ,</option>
+								<option value="semicolon">semicolon ;</option>
+								<option value="tab">tab </option>
+								<option value="space">space </option>
+							</select>
+						</div>
+						<div class="input-group">
+							<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-html="true" title="you can add words to dictionary">
+								<span class="input-group-text">custom dictionary</span>
+							</div>
+							<input type="text" class="form-control" name="custom_dict" id="custom_dict" placeholder="words delimited by comma or space" autocomplete="off">
+						</div>
+					</div>
+				</div>
+				<textarea class="form-control" name="text" rows="3" id="input_text" style="width:100%;"></textarea>
+				<input type="file" name="file" id="input_file" accept="text/*" class="form-control-file mt-1" onchange="validate_file();">
+			</form>
+		</div>
+	</div>
+</div>
+
+{% if result %}
+<br>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card border-secondary">
+				<div class="card-header">
+					word count : {{ token_num }}
+				</div>
+				<div class="card-body" style="padding: 0%;">
+					<textarea class="form-control" rows="5" id="result">{{ result }}</textarea>
+				</div>
+				<div class="card-footer">
+					<button class="btn btn-secondary" value="copy" onclick="copy();">copy</button>
+					<a id="download_btn" download>
+						<button class="btn btn-secondary">download .txt</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	input_text.value = {{ text|tojson }};
+	custom_dict.value = {{ custom_dict|tojson }};
+	// make download data
+	tokenized = {{ result|tojson }};
+	let blob = new Blob([tokenized], {type:"text/plan"});
+	download_btn.href = URL.createObjectURL(blob);
+	download_btn.download = 'tokenized.txt';
+</script>
+{% endif %}
+
+<script>
+	function validate_form_tokenize(){
+		if(input_file.value.length==0 && input_text.value.trim()==''){
+			input_text.value = '';
+			input_text.focus();
+			return false;
+		}else if(input_file.value.length==0 && input_text.value.trim().length>100000){
+			alert('the text is too long');
+			return false;
+		}else{
+			return true;
+		}
+	}
+	function copy(){
+    $('#result').select();
+    document.execCommand('copy');
+		// $('#result').blur();
+	}
+	mode_tokenize.classList.add('active');
+</script>
+
+{% endblock %}
