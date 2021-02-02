@@ -58,8 +58,7 @@ def top_page():
 	########## AJAX ##########
 	elif request.method == 'POST':
 		try:
-			print(request.form)
-			app.logger.info(request.form) # logging data
+			# app.logger.info(request.form) # logging data
 			sources = request.form.getlist('sources[]') # list of data sources [source_twitter, source_pantip]
 			sources = [s.replace('source_', '') for s in sources] # replace to [twitter, pantip]
 
@@ -440,13 +439,13 @@ def search_by_word(query:str, sources:list, n_left:int, n_right:int, is_multiple
 			stmt2 = f"SELECT tokens FROM JSON_TABLE(@{source}, '$[*]' COLUMNS(ID INT PATH '$')) AS temp LEFT JOIN {source} ON temp.ID = {source}.ID;" # join
 			cursor.execute(stmt1)
 			cursor.execute(stmt2)
-			print(stmt1, stmt2, sep='\n')
+			#print(stmt1, stmt2, sep='\n')
 		elif num_of_query == 2: # use bigram index instead
 			stmt1 = f"SELECT @{source} := IDs FROM {source}_index_bigram WHERE word = '{query}' LIMIT 1;"
 			stmt2 = f"SELECT tokens FROM JSON_TABLE(@{source}, '$[*]' COLUMNS(ID INT PATH '$')) AS temp LEFT JOIN {source} ON temp.ID = {source}.ID;"
 			cursor.execute(stmt1)
 			cursor.execute(stmt2)
-			print(stmt1, stmt2, sep='\n')
+			#print(stmt1, stmt2, sep='\n')
 		elif num_of_query == 3: # Join bigrams 2 times
 			query1 = '|'.join(splitted_query[0:2]) # [ไป, ไหน, ดี] -> 'ไป|ไหน'
 			query2 = '|'.join(splitted_query[1:3]) # [ไป, ไหน, ดี] -> 'ไหน|ดี'
@@ -458,7 +457,7 @@ def search_by_word(query:str, sources:list, n_left:int, n_right:int, is_multiple
 			cursor.execute(stmt1)
 			cursor.execute(stmt2)
 			cursor.execute(stmt3)
-			print(stmt1,stmt2,stmt3, sep='\n')
+			#print(stmt1,stmt2,stmt3, sep='\n')
 		elif num_of_query > 3:
 			for i in range(num_of_query-1):
 				temp_query = '|'.join(splitted_query[i:i+2])
@@ -470,7 +469,7 @@ def search_by_word(query:str, sources:list, n_left:int, n_right:int, is_multiple
 				elif i > 0:
 					stmt_join += f"INNER JOIN (SELECT ID FROM JSON_TABLE(@{source}{i}, '$[*]' COLUMNS(ID INT PATH '$')) AS tt) AS temp{i} ON temp0.ID = temp{i}.ID "			
 			stmt_join += f"LEFT JOIN {source} ON temp{i}.ID = {source}.ID;"
-			print(stmt_join)
+			#print(stmt_join)
 			cursor.execute(stmt_join)
 
 		##### make ngram of each record #####
@@ -561,7 +560,7 @@ def search_by_string(query:str, sources:list, is_regex=False, max_len=500):
 			stmt = f"SELECT full_text FROM {source} WHERE full_text LIKE '%{query}' LIMIT {max_len};"
 		elif mode == 'any': # neither [start] nor [end]
 			stmt = f"SELECT full_text FROM {source} WHERE full_text LIKE '%{query}%' LIMIT {max_len};"
-		print(stmt)
+		#print(stmt)
 		cursor.execute(stmt)
 
 		# append SQL result to list
