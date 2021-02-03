@@ -660,11 +660,11 @@
 			let history_num = document.cookie.match(/history\d\d?=/g);
 			history_num = (history_num == null)? 0 : history_num.length; // the number of recorded cookie
 			if(history_num > 0){ // slide hitory e.g. history12 -> history13
-				for(var i=Math.min(history_num, 10); i>0; i--){ // maximum 20 records
+				for(var i=Math.min(history_num, 10); i>0; i--){ // maximum 10 records
 					Cookies.set(`history${i}`, Cookies.get(`history${i-1}`), {expires: 20}); // keep 20 days
 				}
 			}
-			//Cookies.set("history0", JSON.stringify(data_to_send), {expires: 60}); // history0 = current one
+			Cookies.set("history0", JSON.stringify(vue._data), {expires: 60}); // history0 = current one
 			set_history();
 		}).fail(function(){ // when fail to connet 
 			// hide rotating spinner

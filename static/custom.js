@@ -33,7 +33,7 @@ function make_list(n, present_input){
 
 // COOKIE
 function set_history(){
-	let histories = document.cookie.match(/history\d\d?=/g); // history0 ~ history20 (max)
+	let histories = document.cookie.match(/history\d\d?=/g); // history0 ~ history10 (max)
 	history_num = (histories == null)? 0 : histories.length;
 	if(history_num !== 0){
 		history_table.innerHTML = ""; // initialize history table
@@ -44,14 +44,14 @@ function set_history(){
 			if(dic.mode=="word"){
 				history_table.innerHTML +=
 				`<tr>
-					<td class="history" onclick="set_input(${i});">
+					<td class="history">
 					${(dic.input1 + " " + dic.input2).trim()}</td>
 					<td class="table-danger">SEARCH BY WORD</td>
 				</tr>`;
 			}else{
 				history_table.innerHTML +=
 				`<tr>
-					<td class="history" onclick="set_input(${i});">
+					<td class="history">
 					${(dic.input1 + " " + dic.input2).trim()}</td>
 					<td class="table-primary">SEARCH BY STRING</td>
 				</tr>`;
@@ -60,38 +60,6 @@ function set_history(){
 	}
 }
 
-// function for set parameter when search from history
-function set_input(i){
-	dic = JSON.parse(Cookies.get(`history${i}`));
-	mode = dic.mode;
-	if(mode=="word"){
-		input_word1.value = dic.input1;
-		input_word2.value = dic.input2;
-	}else if(mode=="string"){
-		input_string1.value = dic.input1;
-		input_string2.value = dic.input2;
-	}else if(mode=="word_to_string"){
-		input_string1.value = dic.input1;
-		input_string2.value = dic.input2;
-		input3 = dic.input3;
-	}
-	switch_regex.checked = dic.is_regex;
-	use_multiple_words.checked = dic.use_multiple_words;
-	// data source
-	let ALL_SOURCES = Array.from(document.querySelectorAll(".source")).map(x => x.id);
-	unselect_all();
-	for(var source of ALL_SOURCES){
-		if(dic.sources.includes(source)){
-			set_source(document.getElementById(source));
-		}
-	}
-	// option
-	n_left.value = dic.n_left;
-	n_right.value = dic.n_right;
-	// close hitory modal
-	$("#modal4").modal("hide");
-	start_ajax(mode);
-}
 
 ////////// Press Enter Key to search //////////
 document.addEventListener('keyup', function(event){
