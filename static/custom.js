@@ -45,14 +45,14 @@ function set_history(){
 				history_table.innerHTML +=
 				`<tr>
 					<td class="history">
-					${(dic.input1 + " " + dic.input2).trim()}</td>
+					${(dic.input_word1 + " " + dic.input_word2).trim()}</td>
 					<td class="table-danger">SEARCH BY WORD</td>
 				</tr>`;
-			}else{
+			}else if(dic.mode=='string'){
 				history_table.innerHTML +=
 				`<tr>
 					<td class="history">
-					${(dic.input1 + " " + dic.input2).trim()}</td>
+					${(dic.input_string1 + " " + dic.input_string2).trim()}</td>
 					<td class="table-primary">SEARCH BY STRING</td>
 				</tr>`;
 			}
