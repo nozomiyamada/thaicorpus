@@ -281,20 +281,20 @@ def page_wordcloud():
 			wc = WordCloud(
 				font_path = f'./static/fonts/{font}.ttf', 
 				relative_scaling = 0.5,
+				scale = 1,
 				min_font_size = 1,
+				font_step = 2,
 				background_color = bgcolor,
 				width = int(request.form['width']),
 				height = int(request.form['height']),
 				max_words = int(request.form['maxword']),
 				colormap = 'plasma', 
-				scale = 1,
 				mask = mask,
 				#contour_width=3,
 				#contour_color='indianred',
 				stopwords = stopwords,
 				mode='RGB',
 				regexp = r'[ก-๙A-z0-9][ก-๙A-z0-9\.\-]*',
-				font_step = 2,
 				collocations=False,
 				margin=20,).generate(tokens)
 			print(time.time()-s)
