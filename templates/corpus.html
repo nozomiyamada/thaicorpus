@@ -1,697 +1,377 @@
 {% extends "layout.html" %}
 {% block content %}
-{% raw %}
+
+
+
+
 
 <br>
-<div class="container" id="container_corpus">
-	<!-------------------------------------------------------------------------------->
-	<!--	FIRST ROW : MODALS	-->
-	<!-------------------------------------------------------------------------------->
+<div class="container">
+  <!-------------------------------------------------------------------------------->
+  <!-- FIRST ROW : MODALS -->
+  <!-------------------------------------------------------------------------------->
 	<div class="row mb-2">
 		<div class="col-md-12">
-			<div class="btn-group btn-group-toggle">
-				<label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal1"> 
-					<input type="checkbox" autocomplete="off"> ABOUT
-				</label>
-				<label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal2">
-					<input type="checkbox" autocomplete="off"> HOW TO USE
-				</label>
-				<label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal3">
-					<input type="checkbox" autocomplete="off"> DATA SOURCES
-				</label>
-				<label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal4">
-					<input type="checkbox" autocomplete="off"> SEARCH HISTORY
-				</label>
-			</div>
+      <div class="btn-group btn-group-toggle">
+        <label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal1"> 
+          <input type="checkbox" autocomplete="off"> ABOUT
+        </label>
+        <label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal2">
+          <input type="checkbox" autocomplete="off"> HOW TO USE
+        </label>
+        <label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal3">
+          <input type="checkbox" autocomplete="off"> DATA SOURCES
+        </label>
+        <label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal4">
+          <input type="checkbox" autocomplete="off"> SEARCH HISTORY
+        </label>
+      </div>
 
-			<!----- MODAL 1 : ABOUT ----->
-			<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="label1">
-								<span v-show="lang=='th'">เกี่ยวกับคลังข้อมูลนี้</span>
-								<span v-show="lang=='jp'">このコーパスについて</span>
-							</h5>
-							&nbsp;&nbsp;&nbsp;
-							<button type="button" class="btn btn-outline-secondary" v-show="lang=='th'" onclick="change_lang(this);">日本語</button>
-							<button type="button" class="btn btn-outline-secondary" v-show="lang=='jp'" onclick="change_lang(this);">ภาษาไทย</button>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div v-show="lang=='th'">
-								Thai Web Corpus (TWC) เป็นคลังข้อมูลภาษาไทยในเว็บสำหรับผู้เรียนภาษาไทย(และนักวิชาการ)
-								ผู้ใช้บริการสามารถสืบค้นจากคลังข้อมูลได้หลายแบบ เช่น ตัวอย่างประโยคพร้อมด้วยบริบท หรือคำที่มักจะปรากฏร่วม
-								เนื่องจากคลังข้อมูลเป็น "ชุดข้อมูลของการใช้งานจริง" จึงอาจมีภาษาไทยที่ไม่มาตรฐานด้วย
-								หากต้องการใช้คลังข้อมูลที่มีจำนวนข้อมูลและฟังก์ชันจำนวนมาก แนะนำให้ใช้ <a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus (TNC)</a><br><br>
-								แอปพลิเคชันนี้สร้างโดย Python3.7 (Flask), JavaScript, MySQL8.0 และใช้ <a href="https://pypi.org/project/pythainlp/" target="_blank">PyThaiNLP</a> ในการตัดคำ
-							</div>
-							<div v-show="lang=='jp'">
-								Thai Web Corpus (TWC) はタイ語学習者向けに作られたタイ語のウェブコーパス(言語使用記録集)です。
-								実際にどのような文脈で用いるか、どのような単語と一緒になりやすいかなどを、コーパスに基づいて確認することが可能です。
-								ただし、あくまで「ウェブ上での生の言語使用記録」であり、辞書のような「標準的タイ語」だけとは限らないという点をご了承下さい。
-								より高機能かつ幅広いデータソースのタイ語コーパスとして <a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus (TNC)</a> もありますので、こちらもご利用下さい。<br><br>
-								このアプリケーションは Python3.7 (Flask), JavaScript, MySQL8.0 で開発されています。形態素解析には <a href="https://pypi.org/project/pythainlp/" target="_blank">PyThaiNLP</a> を使用しています。
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+      <!----- MODAL 1 : ABOUT ----->
+      <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label1">
+                <span class="th">เกี่ยวกับคลังข้อมูลนี้</span>
+                <span class="jp" style="display:none">このコーパスについて</span>
+              </h5>
+              &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-outline-secondary btn_lang" onclick="change_lang(this);">日本語</button>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="th">
+                Thai Web Corpus (TWC) เป็นคลังข้อมูลภาษาไทยในเว็บสำหรับผู้เรียนภาษาไทย(และนักวิชาการ)
+                ผู้ใช้บริการสามารถสืบค้นจากคลังข้อมูลได้หลายแบบ เช่น ตัวอย่างประโยคพร้อมด้วยบริบท หรือคำที่มักจะปรากฏร่วม
+                เนื่องจากคลังข้อมูลเป็น "ชุดข้อมูลของการใช้งานจริง" จึงอาจมีภาษาไทยที่ไม่มาตรฐานด้วย
+                หากต้องการใช้คลังข้อมูลที่มีจำนวนข้อมูลและฟังก์ชันจำนวนมาก แนะนำให้ใช้ <a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus (TNC)</a><br><br>
+                แอปพลิเคชันนี้สร้างโดย Python3.7 (Flask), JavaScript, MySQL8.0 และใช้ <a href="https://pypi.org/project/pythainlp/" target="_blank">PyThaiNLP</a> ในการตัดคำ
+              </div>
+              <div class="jp" style="display: none">
+                Thai Web Corpus (TWC) はタイ語学習者向けに作られたタイ語のウェブコーパス(言語使用記録集)です。
+                実際にどのような文脈で用いるか、どのような単語と一緒になりやすいかなどを、コーパスに基づいて確認することが可能です。
+                ただし、あくまで「ウェブ上での生の言語使用記録」であり、辞書のような「標準的タイ語」だけとは限らないという点をご了承下さい。
+                より高機能かつ幅広いデータソースのタイ語コーパスとして <a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus (TNC)</a> もありますので、こちらもご利用下さい。<br><br>
+                このアプリケーションは Python3.7 (Flask), JavaScript, MySQL8.0 で開発されています。形態素解析には <a href="https://pypi.org/project/pythainlp/" target="_blank">PyThaiNLP</a> を使用しています。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-			<!----- MODAL 2 : HOW TO USE ----->
-			<div class="modal fade" id="modal2" tabindex="-1"　role="dialog" aria-labelledby="label2" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="label2">
-								<span v-show="lang=='th'">วิธีใช้</span>
-								<span v-show="lang=='jp'">使い方</span>
-							</h5>
-							&nbsp;&nbsp;&nbsp;
-							<button type="button" class="btn btn-outline-secondary" v-show="lang=='th'" onclick="change_lang(this);">日本語</button>
-							<button type="button" class="btn btn-outline-secondary" v-show="lang=='jp'" onclick="change_lang(this);">ภาษาไทย</button>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div v-show="lang=='th'">
-								วิธีสืบค้นมีสองแบบ
-								<ol>
-									<li><span class="text-danger">SEARCH BY WORD</span> (สืบค้นโดยคำ): เป็นสถิติของ 1.ความถี่ของคำที่ใส่ในแต่ละแหล่งข้อมูล(ต่อล้านคำ) 2.การปรากฏร่วมทั้งด้านซ้ายและด้านขวา(n-gram)<br>
-										เนื่องจากเป็นการสืบค้นโดยคำ ดังนั้นใส่สองคำก็ไม่แมทช์ (เช่น "ไปสยาม") แต่หากเช็ค "use multiple words as input" แล้วคั่นโดย vertical bar | เช่น "ประเทศ|ญี่ปุ่น" ก็จะสามารถสืบค้นได้โดยจัดการสองคำเป็นคำเดียว<br>
-										คลิกตรงผลลัพธ์แล้วจะสามารถสืบค้นโดยคำหรือข้อความต่อได้<br>
-										"__" หมายความว่าการเว้นวรรค(space)
-									</li>
-									<li><span class="text-primary">SEARCH BY STRING</span> (สืบค้นโดยข้อความ): เป็นการสืบค้นบริบทของข้อความที่ใส่ จึงสามารถสืบค้นโดยใช้วลีได้ เนื่องจากเป็นการสืบค้นข้อความด้วยตัวอักษรโดยไม่พิจารณาขอบเขตคำ(ซึ่งใช้เวลานานนิดหน่อย)<br>
-										ดังนั้นผลลัพธ์ที่ได้อาจจะมีความหลากหลาย เช่น สืบค้นคำว่า "<span class="red">นอน</span>" จะได้ผลลัพธ์ที่มีคำว่า "ใ<span class="red">นอน</span>าคต" ด้วย<br>
-										SEARCH BY STRING ใช้เวลานานกว่า เนื้องจากไล่ไปเช็คข้อมูลทีละอัน แต่ SEARCH BY WORD ก่อนแล้วค่อยเลือก pattern ในผลลัพธ์ จะสามารถสืบค้นได้โดยเร็ว
-									</li>
-								</ol>
-								<ul>
-									<li>
-										ถ้าใส่ [start] เช่น "[start]|เมื่อ" (กรณี SEARCH BY WORD) "[start]เมื่อ" (กรณี SEARCH BY STRING) จะสามารถสืบค้นเฉพาะข้อมูลที่ขี้นด้วย "เมื่อ" ได้ และใส่ [end] ข้างหลัง เช่น "แล้ว|[end]" "แล้ว[end]" จะสามารถสืบค้นเฉพาะข้อมูลที่ลงท้ายด้วย "แล้ว" ได้<br>
-										แต่กรณีนี้ไม่แมทช์กับคำที่มีอยู่ตรงกลาง เพราะฉะนั้น แนะนำให้ใช้เพื่อการสืบค้นในข้อความไม่ยาวอย่าง Twitter
-									</li>
-									<li>
-										กรณีใส่สองคำใน input จะเปรียบเทียบผลลัพธ์เป็นคู่ได้ นอกจากนั้น สามารถเลือกแหล่งข้อมูลได้โดย SELECT DATA SOURCES ด้านล่าง<br>
-										แสดงผลลัพธ์ประมาณ 500 รายการ (300 รายการสำหรับโทรศัพท์มือถือ) เพื่อลดภาระของ server และ browser กรณีมีผลลัพธ์ที่แสดงมากเกินไป ให้เจาะจงแหล่งข้อมูลที่ต้องการสืบค้น
-									</li>
-								</ul>
-							</div>
-							<div v-show="lang=='jp'">
-								検索方法は2通りあります。
-								<ol>
-									<li><span class="text-danger">SEARCH BY WORD</span> (語彙検索)：入力した語彙の、「選択したデータソース内での頻度(100万語あたり)」「その語彙の左右にどのような語句が共起するか (n-gram)」の統計情報を検索。あくまで単語単位の検索なので、そのままでは2語以上のフレーズを入れてもヒットしませんが、オプションの "use multiple words as input" をチェックし、2語以上の語を "ประเทศ|ญี่ปุ่น" のように | で区切ることで、一つの単語とみなして検索可能です。結果をクリックすれば、そのまま続けて複数語検索/文字列検索できます。"__" は空白(スペース)を表しています。</li>
-									<li><span class="text-primary">SEARCH BY STRING</span> (文字列検索)：入力した文字列と完全一致するものの用例 (前後文脈) を検索。単語境界を無視して検索するので任意のフレーズでの検索も可能ですが、 นอน が ใ<span class="red">นอน</span>าคต などにもヒットしてしまいます。また、そのまま検索すると多少時間がかかりますので、一旦単語検索でパターンを絞り、結果欄から続けて検索すると高速に検索できます。</li>
-								</ol>
-								<ul>
-									<li>
-										単語検索なら [start]|เมื่อ のように、文字列検索なら [start]|เมื่อ のように入力すれば、เมื่อ で始まるもののみが検索できます。同様に แล้ว|[end] または แล้ว[end] のように入力すれば、แล้ว で終わるもののみを検索できます。ただし、ニュース記事などは1件あたりの文字数が1000字以上あるものも多く、その場合は文章中に存在する単語はヒットしません。Twitter などの短文の検索向きです。
-									</li>
-									<li>
-										文字列検索/語彙検索とも、2つの入力欄を指定することで検索を同時に行い、その結果を比較できます。また、下部のSELECT DATA SOURCES からデータソースを選択可能です。サーバーおよびブラウザの負荷軽減のため、検索結果表示は最大500件(スマートフォンは300件)ほどとなっています。検索結果が多過ぎる場合は、データソースを絞って検索してみて下さい。
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+      <!----- MODAL 2 : HOW TO USE ----->
+      <div class="modal fade" id="modal2" tabindex="-1"　role="dialog" aria-labelledby="label2" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label2">
+                <span class="th">วิธีใช้</span>
+                <span class="jp" style="display:none">使い方</span>
+              </h5>
+              &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-outline-secondary btn_lang" onclick="change_lang(this);">日本語</button>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="th">
+                วิธีสืบค้นมีสองแบบ
+                <ol>
+                  <li><span class="text-danger">SEARCH BY WORD</span> (สืบค้นโดยคำ): เป็นสถิติของ 1.ความถี่ของคำที่ใส่ในแต่ละแหล่งข้อมูล(ต่อล้านคำ) 2.การปรากฏร่วมทั้งด้านซ้ายและด้านขวา(n-gram)<br>
+                    เนื่องจากเป็นการสืบค้นโดยคำ ดังนั้นใส่สองคำก็ไม่แมทช์ (เช่น "ไปสยาม") แต่หากเช็ค "use multiple words as input" แล้วคั่นโดย vertical bar | เช่น "ประเทศ|ญี่ปุ่น" ก็จะสามารถสืบค้นได้โดยจัดการสองคำเป็นคำเดียว<br>
+                    คลิกตรงผลลัพธ์แล้วจะสามารถสืบค้นโดยคำหรือข้อความต่อได้<br>
+                    "__" หมายความว่าการเว้นวรรค(space)
+                  </li>
+                  <li><span class="text-primary">SEARCH BY STRING</span> (สืบค้นโดยข้อความ): เป็นการสืบค้นบริบทของข้อความที่ใส่ จึงสามารถสืบค้นโดยใช้วลีได้ เนื่องจากเป็นการสืบค้นข้อความด้วยตัวอักษรโดยไม่พิจารณาขอบเขตคำ(ซึ่งใช้เวลานานนิดหน่อย)<br>
+                    ดังนั้นผลลัพธ์ที่ได้อาจจะมีความหลากหลาย เช่น สืบค้นคำว่า "<span class="red">นอน</span>" จะได้ผลลัพธ์ที่มีคำว่า "ใ<span class="red">นอน</span>าคต" ด้วย<br>
+                    SEARCH BY STRING ใช้เวลานานกว่า เนื้องจากไล่ไปเช็คข้อมูลทีละอัน แต่ SEARCH BY WORD ก่อนแล้วค่อยเลือก pattern ในผลลัพธ์ จะสามารถสืบค้นได้โดยเร็ว
+                  </li>
+                </ol>
+                <ul>
+                  <li>
+                    ถ้าใส่ [start] เช่น "[start]|เมื่อ" (กรณี SEARCH BY WORD) "[start]เมื่อ" (กรณี SEARCH BY STRING) จะสามารถสืบค้นเฉพาะข้อมูลที่ขี้นด้วย "เมื่อ" ได้ และใส่ [end] ข้างหลัง เช่น "แล้ว|[end]" "แล้ว[end]" จะสามารถสืบค้นเฉพาะข้อมูลที่ลงท้ายด้วย "แล้ว" ได้<br>
+                    แต่กรณีนี้ไม่แมทช์กับคำที่มีอยู่ตรงกลาง เพราะฉะนั้น แนะนำให้ใช้เพื่อการสืบค้นในข้อความไม่ยาวอย่าง Twitter
+                  </li>
+                  <li>
+                    กรณีใส่สองคำใน input จะเปรียบเทียบผลลัพธ์เป็นคู่ได้ นอกจากนั้น สามารถเลือกแหล่งข้อมูลได้โดย SELECT DATA SOURCES ด้านล่าง<br>
+                    แสดงผลลัพธ์ประมาณ 500 รายการ (300 รายการสำหรับโทรศัพท์มือถือ) เพื่อลดภาระของ server และ browser กรณีมีผลลัพธ์ที่แสดงมากเกินไป ให้เจาะจงแหล่งข้อมูลที่ต้องการสืบค้น
+                  </li>
+                </ul>
+              </div>
+              <div class="jp" style="display: none;">
+                検索方法は2通りあります。
+                <ol>
+                  <li><span class="text-danger">SEARCH BY WORD</span> (語彙検索)：入力した語彙の、「選択したデータソース内での頻度(100万語あたり)」「その語彙の左右にどのような語句が共起するか (n-gram)」の統計情報を検索。あくまで単語単位の検索なので、そのままでは2語以上のフレーズを入れてもヒットしませんが、オプションの "use multiple words as input" をチェックし、2語以上の語を "ประเทศ|ญี่ปุ่น" のように | で区切ることで、一つの単語とみなして検索可能です。結果をクリックすれば、そのまま続けて複数語検索/文字列検索できます。"__" は空白(スペース)を表しています。</li>
+                  <li><span class="text-primary">SEARCH BY STRING</span> (文字列検索)：入力した文字列と完全一致するものの用例 (前後文脈) を検索。単語境界を無視して検索するので任意のフレーズでの検索も可能ですが、 นอน が ใ<span class="red">นอน</span>าคต などにもヒットしてしまいます。また、そのまま検索すると多少時間がかかりますので、一旦単語検索でパターンを絞り、結果欄から続けて検索すると高速に検索できます。</li>
+                </ol>
+                <ul>
+                  <li>
+                    単語検索なら [start]|เมื่อ のように、文字列検索なら [start]|เมื่อ のように入力すれば、เมื่อ で始まるもののみが検索できます。同様に แล้ว|[end] または แล้ว[end] のように入力すれば、แล้ว で終わるもののみを検索できます。ただし、ニュース記事などは1件あたりの文字数が1000字以上あるものも多く、その場合は文章中に存在する単語はヒットしません。Twitter などの短文の検索向きです。
+                  </li>
+                  <li>
+                    文字列検索/語彙検索とも、2つの入力欄を指定することで検索を同時に行い、その結果を比較できます。また、下部のSELECT DATA SOURCES からデータソースを選択可能です。サーバーおよびブラウザの負荷軽減のため、検索結果表示は最大500件(スマートフォンは300件)ほどとなっています。検索結果が多過ぎる場合は、データソースを絞って検索してみて下さい。
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-			<!----- MODAL 3 : DATA SOURCE ----->
-			<div class="modal fade" id="modal3" tabindex="-1"　role="dialog" aria-labelledby="label3" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="label3">รายชื่อแหล่งข้อมูล データソース一覧</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<table class="table" style="table-layout: fixed; width: 100%; text-align: center;">
-								<tr>
-									<td><a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus (TNC)</a></td>
-									<td>Balanced Corpus</td>
-								</tr>
-								<tr>
-									<td><a href="https://twitter.com/home?lang=th" target="_blank">Twitter</a></td>
-									<td>SNS</td>
-								</tr>
-								<tr>
-									<td><a href="https://www.matichon.co.th/" target="_blank">มติชน Matichon</a></td>
-									<td>Newspaper</td>
-								</tr>
-								<tr>
-									<td><a href="https://www.thairath.co.th/news" target="_blank">ไทยรัฐ Thairath</a></td>
-									<td>Newspaper</td>
-								</tr>
-								<tr>
-									<td><a href="https://www.dailynews.co.th/" target="_blank">เดลินิวส์ Dailynews</a></td>
-									<td>Newspaper</td>
-								</tr>
-								<tr>
-									<td><a href="https://www3.nhk.or.jp/nhkworld/th/news/" target="_blank">NHK World</a></td>
-									<td>Japanese News</td>
-								</tr>
-								<tr>
-									<td><a href="https://pantip.com/" target="_blank">พันทิป Pantip</a></td>
-									<td>Net BBS</td>
-								</tr>
-								<tr>
-									<td><a href="https://mthai.com/" target="_blank">MThai</a></td>
-									<td>Net News</td>
-								</tr>
-								<tr>
-									<td><a href="https://www.joylada.com/" target="_blank">Joylada</a></td>
-									<td>Net Novel</td>
-								</tr>
-								<tr>
-									<td><a href="https://www.dek-d.com/home/writer/" target="_blank">Dek-D"s Writer</a></td>
-									<td>Net Novel</td>
-								</tr>
-								<tr>
-									<td><a href="https://cuir.car.chula.ac.th/" target="_blank">CUIR</a></td>
-									<td>Academic Paper</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
+      <!----- MODAL 3 : DATA SOURCE ----->
+      <div class="modal fade" id="modal3" tabindex="-1"　role="dialog" aria-labelledby="label3" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label3">รายชื่อแหล่งข้อมูล データソース一覧</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table class="table" style="table-layout: fixed; width: 100%; text-align: center;">
+                <tr>
+                  <td><a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus (TNC)</a></td>
+                  <td>Balanced Corpus</td>
+                </tr>
+                <tr>
+                  <td><a href="https://twitter.com/home?lang=th" target="_blank">Twitter</a></td>
+                  <td>SNS</td>
+                </tr>
+                <tr>
+                  <td><a href="https://www.matichon.co.th/" target="_blank">มติชน Matichon</a></td>
+                  <td>Newspaper</td>
+                </tr>
+                <tr>
+                  <td><a href="https://www.thairath.co.th/news" target="_blank">ไทยรัฐ Thairath</a></td>
+                  <td>Newspaper</td>
+                </tr>
+                <tr>
+                  <td><a href="https://www.dailynews.co.th/" target="_blank">เดลินิวส์ Dailynews</a></td>
+                  <td>Newspaper</td>
+                </tr>
+                <tr>
+                  <td><a href="https://www3.nhk.or.jp/nhkworld/th/news/" target="_blank">NHK World</a></td>
+                  <td>Japanese News</td>
+                </tr>
+                <tr>
+                  <td><a href="https://pantip.com/" target="_blank">พันทิป Pantip</a></td>
+                  <td>Net BBS</td>
+                </tr>
+                <tr>
+                  <td><a href="https://mthai.com/" target="_blank">MThai</a></td>
+                  <td>Net News</td>
+                </tr>
+                <tr>
+                  <td><a href="https://www.joylada.com/" target="_blank">Joylada</a></td>
+                  <td>Net Novel</td>
+                </tr>
+                <tr>
+                  <td><a href="https://www.dek-d.com/home/writer/" target="_blank">Dek-D"s Writer</a></td>
+                  <td>Net Novel</td>
+                </tr>
+                <tr>
+                  <td><a href="https://cuir.car.chula.ac.th/" target="_blank">CUIR</a></td>
+                  <td>Academic Paper</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
-			<!----- MODAL 4 : HISTORY ----->
-			<div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="label4" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="label4">
-								SEARCH HISTORY
-							</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<table class="table" style="table-layout: fixed; width: 100%; text-align: center;">
-								<tbody id="history_table">
-									<!-- insert history here by function "set_history()" -->
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div> 
-		</div>
-	</div> <!-- end of modal rows -->
+      <!----- MODAL 4 : HISTORY ----->
+      <div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="label4" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label4">
+                SEARCH HISTORY
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table class="table" style="table-layout: fixed; width: 100%; text-align: center;">
+                <tbody id="history_table">
+                  <!-- insert history here by function "set_history()" -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div> <!-- end of modal rows -->
 
-	
-	<!-------------------------------------------------------------------------------->
-	<!--	INPUT & OPTION & BUTTON	-->
-	<!-------------------------------------------------------------------------------->
+  
+  <!-------------------------------------------------------------------------------->
+  <!-- INPUT & OPTION & BUTTON -->
+  <!-------------------------------------------------------------------------------->
+
 	<div class="row mb-3">
-		<!-------------------- SEARCH BY WORD -------------------->
+
+    <!-------------------- SEARCH BY WORD -------------------->
 		<div class="col-md-6" >
-			<!-- input form -->
-			<div class="card border-danger mb-2" style="min-height: 180px;">
-				<div class="card-header">
-					<span data-toggle="tooltip" data-placement="top" title="search by tokenized word(s)<br>show results of n-gram">SEARCH BY WORD</span>
-					<span class="pointer" style="float:right;" onclick="copy_input('toright');">copy to right ▶︎</span>
-				</div>
-				<div class="card-body">
-					<div class="input-group mb-1">
-						<input type="input-group-text" class="form-control" id="input_word1" v-model="input_word1" autocomplete="off" list="datalist1" placeholder="word1" oninput="make_list(1, this.value);">
-						<datalist id="datalist1"></datalist>
-						<div class="input-group-append pointer">
-							<button class="btn btn-outline-danger" onclick="vue.input_word1='';input_word1.focus();">clear</button>
-						</div>
-					</div>
-					<div class="input-group">
-						<input type="input-group-text" class="form-control" id="input_word2" v-model="input_word2" autocomplete="off" list="datalist2" placeholder="word2 to compare (if any)" oninput="make_list(2, this.value);">
-						<datalist id="datalist2"></datalist>
-						<div class="input-group-append pointer">
-							<button class="btn btn-outline-danger" onclick="vue.input_word2='';input_word2.focus();">clear</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- option -->
-			<div class="card border-danger mb-2">
-				<div class="card-header pointer" style="height: 2em; padding: 0.2em 1em" onclick="show_hide('option_word');">
-					▼ options
-				</div>
-				<div class="card-body" id="option_word" style="display: none;">
-					<div class="input-group mb-2">
-						<div class="input-group-prepend">
-							<span class="input-group-text" data-toggle="tooltip" data-placement="top"
-								title="how many words to use in the counting n-gram frequency<br>if n=1, count the number of bigram (xxx, input word)">left words</span>
-						</div>
-						<select class="form-control" v-model="n_left">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-						</select>
-						<div class="input-group-prepend">
-							<span class="input-group-text" data-toggle="tooltip" data-placement="top"
-								title="how many words to use in the counting n-gram frequency<br>if n=2, count the number of trigram (input word, xxx, xxx)">right words</span>
-						</div>
-						<select class="form-control" v-model="n_right">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-						</select>
-					</div>
-					<div class="custom-control custom-switch">
-						<input type="checkbox" class="custom-control-input" id="use_multiple_words" v-model="use_multiple_words">
-						<label class="custom-control-label" for="use_multiple_words" data-toggle="tooltip" data-placement="top"
-							title="If checked, you can search results regarding multiple words as a single word.<br>Each word must be delimited by vertical bar | e.g. หิว|แล้ว">use multiple words as query</label>
-					</div>
-				</div>
-			</div>
-			<!-- search button -->
-			<button class="btn btn-danger mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="this.blur();start_ajax('word');">
-				<i class="fas fa-search"></i> SEARCH BY WORD
-			</button>
-		</div>
-		
-			
-		
-		<!-------------------- SEARCH BY STRING -------------------->
+      <!-- input form -->
+      <div class="card border-danger mb-2" style="min-height: 180px;">
+        <div class="card-header">
+          <span data-toggle="tooltip" data-placement="top" title="search by tokenized word(s)<br>show results of n-gram">SEARCH BY WORD</span>
+          <span class="pointer" style="float:right;" onclick="copy_input('toright');">copy to right ▶︎</span>
+        </div>
+        <div class="card-body">
+          <div class="input-group mb-1">
+            <input type="input-group-text" class="form-control" id="input_word1" autocomplete="off" list="datalist1" placeholder="word1" oninput="make_list(1, this.value);">
+            <datalist id="datalist1"></datalist>
+            <div class="input-group-append pointer">
+              <button class="btn btn-outline-danger" onclick="input_word1.value='';input_word1.focus();">clear</button>
+            </div>
+          </div>
+          <div class="input-group">
+            <input type="input-group-text" class="form-control" id="input_word2" autocomplete="off" list="datalist2" placeholder="word2 to compare (if any)" oninput="make_list(2, this.value);">
+            <datalist id="datalist2"></datalist>
+            <div class="input-group-append pointer">
+              <button class="btn btn-outline-danger" onclick="input_word2.value='';input_word2.focus();">clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- option -->
+      <div class="card border-danger mb-2">
+        <div class="card-header pointer" style="height: 2em; padding: 0.2em 1em" onclick="show_hide('option_search_word');">
+          ▼ options
+        </div>
+        <div class="card-body" id="option_search_word" style="display: none;">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text" data-toggle="tooltip" data-placement="top"
+                title="how many words to use in the counting n-gram frequency<br>if n=1, count the number of bigram (xxx, input word)">left words</span>
+            </div>
+            <select class="form-control" id="n_left">
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+            <div class="input-group-prepend">
+              <span class="input-group-text" data-toggle="tooltip" data-placement="top"
+                title="how many words to use in the counting n-gram frequency<br>if n=2, count the number of trigram (input word, xxx, xxx)">right words</span>
+            </div>
+            <select class="form-control" id="n_right">
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="use_multiple_words">
+            <label class="custom-control-label" for="use_multiple_words" data-toggle="tooltip" data-placement="top"
+              title="If checked, you can search results regarding multiple words as a single word.<br>Each word must be delimited by vertical bar | e.g. หิว|แล้ว">use multiple words as query</label>
+          </div>
+        </div>
+      </div>
+      <!-- search button -->
+      <button class="btn btn-danger mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="this.blur();start_ajax('word');">
+        <i class="fas fa-search"></i> SEARCH BY WORD
+      </button>
+    </div>
+    
+      
+    
+    <!-------------------- SEARCH BY STRING -------------------->
 		<div class="col-md-6">
-			<div class="card border-primary mb-2" style="min-height: 180px;">
-				<div class="card-header">
-					<span data-toggle="tooltip" data-placement="top" title="search by any string(s)<br>it may take a long time">SEARCH BY STRING</span>
-					<span class="pointer" style="float:right;" onclick="copy_input('toleft');">◀︎ copy to left</span>
-				</div>
-				<div class="card-body">
-					<div class="input-group mb-1">
-						<input type="input-group-text" class="form-control" id="input_string1" v-model="input_string1" autocomplete="off" placeholder="string1">
-						<div class="input-group-append">
-							<button class="btn btn-outline-primary" onclick="input_string1.value='';input_string1.focus()">clear</button>
-						</div>
-					</div>
-					<div class="input-group mb-1">
-						<input type="input-group-text" class="form-control" id="input_string2" v-model="input_string2" autocomplete="off" placeholder="string2 to compare (if any)">
-						<div class="input-group-append">
-							<button class="btn btn-outline-primary" onclick="input_string2.value='';input_string2.focus()">clear</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- option -->
-			<div class="card border-primary mb-2">
-				<div class="card-header pointer" style="height: 2em; padding: 0.2em 1em" onclick="show_hide('option_string');">
-					▼ options
-				</div>
-				<div class="card-body" id="option_string" style="display: none;">
-					<div class="input-group mb-2">
-						<div class="input-group-prepend">
-							<span class="input-group-text" data-toggle="tooltip" data-placement="top"
-								title="how to show results<br>highlight: highlight the query with red<br>concordance: split before/after sentence of the query">display style</span>
-						</div>
-						<select class="form-control" id="result_display">
-							<option value="highlight" selected>highlight</option>
-							<option value="concordance" disabled>concordance</option>
-						</select>
-					</div>
-					<!-- regex switch -->
-					<div class="custom-control custom-switch">
-						<input type="checkbox" class="custom-control-input" id="switch_regex" v-model="is_regex">
-						<label class="custom-control-label" for="switch_regex">use Regular Expression in search&nbsp;&nbsp;</label>
-					</div>
-				</div>
-			</div>
-			<!-- search button -->
-			<button class="btn btn-primary mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="this.blur();start_ajax('string');">
-				<i class="fas fa-search"></i> SEARCH BY STRING
-			</button>
+      <div class="card border-primary mb-2" style="min-height: 180px;">
+        <div class="card-header">
+          <span data-toggle="tooltip" data-placement="top" title="search by any string(s)<br>it may take a long time">SEARCH BY STRING</span>
+          <span class="pointer" style="float:right;" onclick="copy_input('toleft');">◀︎ copy to left</span>
+        </div>
+        <div class="card-body">
+          <div class="input-group mb-1">
+            <input type="input-group-text" class="form-control" id="input_string1" autocomplete="off" placeholder="string1">
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary" onclick="input_string1.value='';input_string1.focus()">clear</button>
+            </div>
+          </div>
+          <div class="input-group mb-1">
+            <input type="input-group-text" class="form-control" id="input_string2" autocomplete="off" placeholder="string2 to compare (if any)">
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary" onclick="input_string2.value='';input_string2.focus()">clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- option -->
+      <div class="card border-primary mb-2">
+        <div class="card-header pointer" style="height: 2em; padding: 0.2em 1em" onclick="show_hide('option_search_string');">
+          ▼ options
+        </div>
+        <div class="card-body" id="option_search_string" style="display: none;">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text" data-toggle="tooltip" data-placement="top"
+                title="how to show results<br>highlight: highlight the query with red<br>concordance: split before/after sentence of the query">display style</span>
+            </div>
+            <select class="form-control" id="result_display">
+              <option value="highlight" selected>highlight</option>
+              <option value="concordance" disabled>concordance</option>
+            </select>
+          </div>
+          <!-- regex switch -->
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="switch_regex">
+            <label class="custom-control-label" for="switch_regex">use Regular Expression in search&nbsp;&nbsp;</label>
+          </div>
+        </div>
+      </div>
+      <!-- search button -->
+      <button class="btn btn-primary mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="this.blur();start_ajax('string');">
+        <i class="fas fa-search"></i> SEARCH BY STRING
+      </button>
 		</div>
-	</div>
+  </div>
+
+  <!-- hidden input3 for mode word_to_string -->
+  <input type="hidden" id="input3">
+
+  <!-------------------------------------------------------------------------------->
+  <!-- DATA SOURCES -->
+  <!-------------------------------------------------------------------------------->
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div class="card border-secondary ">
+        <div class="card-header">
+          SELECT DATA SOURCES
+          <span class="pointer" style="float:right;" onclick="unselect_all();">&nbsp;unselect all</span>
+          <span class="pointer" style="float:right;" onclick="select_all();">select all&nbsp;/</span>
+        </div>
+        <div class="card-body">
+          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_twitter" onclick="set_source(this);">Twitter</button>
+          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_matichon" onclick="set_source(this);">Matichon</button>
+          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_thairath" onclick="set_source(this);">Thairath</button>
+          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_dailynews" onclick="set_source(this);">Dailynews</button>
+          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_NHK" onclick="set_source(this);">NHK</button>
+          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_pantip" onclick="set_source(this);">Pantip</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div> <!----- END OF INPUT FORM ----->
 
 
-	<!-------------------------------------------------------------------------------->
-	<!--	DATA SOURCES	-->
-	<!-------------------------------------------------------------------------------->
-	<div class="row mb-3">
-		<div class="col-md-12">
-			<div class="card border-secondary ">
-				<div class="card-header">
-					SELECT DATA SOURCES
-					<span class="pointer" style="float:right;" v-on:click="unselect_all();">&nbsp;unselect all</span>
-					<span class="pointer" style="float:right;" v-on:click="select_all();">select all&nbsp;/</span>
-				</div>
-				<div class="card-body" id="source_list">
-					<button type="button" class="btn btn-secondary mb-1 selected" style="opacity: 1;" name="twitter" v-on:click="add_source($event);">Twitter</button>
-					<button type="button" class="btn btn-secondary mb-1 selected" style="opacity: 1;" name="matichon" v-on:click="add_source($event);">Matichon</button>
-					<button type="button" class="btn btn-secondary mb-1" style="opacity: 0.3;" name="thairath" v-on:click="add_source($event);">Thairath</button>
-					<button type="button" class="btn btn-secondary mb-1" style="opacity: 0.3;" name="dailynews" v-on:click="add_source($event);">Dailynews</button>
-					<button type="button" class="btn btn-secondary mb-1" style="opacity: 0.3;" name="NHK" v-on:click="add_source($event);">NHK</button>
-					<button type="button" class="btn btn-secondary mb-1 selected" style="opacity: 1;" name="pantip" v-on:click="add_source($event);">Pantip</button>
-				</div>
-			</div>
-		</div>
-	</div> <!----- END OF INPUT FORM ----->
 
-	<!-------------------------------------------------------------------------------->
-	<!-- RESULT OF SEARCH -->
-	<!-------------------------------------------------------------------------------->
-	<!-- loading spinner -->
-	<div class="row" id="spinner_word" style="display: none;">
-		<div class="col-md-12 ">
-			<div class="text-center">
-				<div class="spinner-border text-danger m-5" style="width: 3rem; height: 3rem;" role="status">
-					<span class="sr-only">Loading...</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!-- canvas for chart of word frequecy -->
-	<div class="row mb-3" id="word_freq_canvas" style="display: none;">
-		<div class="col-md-12">
-			<canvas id="wf_chart" style="width: 100%; height:300px;">
-			</canvas>
-		</div>
-	</div>
-	
-	<!---------- RESULT OF SEARCH BY WORD (one input) ---------->
-	<div class="row" v-show="result_word == 1" style="display: none;"> 
-		<div class="col-md-12">
-			<div class="card border-info mb-3">
-				<div class="card-header">
-					<h4>SEARCH BY WORD：<span v-html="input_word1"></span></h4>
-				</div>
-				<div class="card-body">
-					<table style="table-layout: fixed; width: 100%;">
-						<thead>
-							<tr class="table-active">
-								<th class="center" style="width:38%;">LEFT <span v-html="n_left"></span> WORDS</th>
-								<th class="center" style="width:12%;"></th>
-								<th class="center" style="width:38%;">RIGHT <span v-html="n_right"></span> WORDS</th>
-								<th class="center" style="width:12%;"></th>
-							</tr>
-						</thead>
-						<tbody id="table_oneword">
-							<!-- insert table here -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-		
-	<!---------- RESULT OF SEARCH BY WORD (two inputs) ---------->
-	<div class="row" v-show="result_word == 2" style="display: none;"> 
-		<div class="col-md-6">
-			<div class="card border-info mb-3">
-				<div class="card-header">
-					<h4>SEARCH BY WORD：<span v-html="input_word1"></span></h4>
-				</div>
-				<div class="card-body">
-					<table style="table-layout: fixed; width: 100%;">
-						<thead>
-							<tr class="table-active">
-								<th class="center" style="width:38%;">LEFT <span v-html="n_left"></span> WORDS</th>
-								<th class="center" style="width:12%;"></th>
-								<th class="center" style="width:38%;">RIGHT <span v-html="n_right"></span> WORDS</th>
-								<th class="center" style="width:12%;"></th>
-							</tr>
-						</thead>
-						<tbody id="table_twoword1">
-							<!-- insert table here -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="card border-info mb-3">
-				<div class="card-header">
-					<h4>SEARCH BY WORD：<span v-html="input_word2"></span></h4>
-				</div>
-				<div class="card-body">
-					<table style="table-layout: fixed; width: 100%;">
-						<thead>
-							<tr class="table-active">
-								<th class="center" style="width:38%;">LEFT <span v-html="n_left"></span> WORDS</th>
-								<th class="center" style="width:12%;"></th>
-								<th class="center" style="width:38%;">RIGHT <span v-html="n_right"></span> WORDS</th>
-								<th class="center" style="width:12%;"></th>
-							</tr>
-						</thead>
-						<tbody id="table_twoword2">
-							<!-- insert table here -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div> 
-	
-	<!------------ RESULT OF SEARCH BY STRING --------------->
-	<!-- LOADING SPINNER -->	
-	<div class="row my-3" id="spinner_string" style="display: none;">
-		<div class="col-md-12 ">
-			<div class="text-center">
-				<div class="spinner-border text-primary m-5" style="width: 3rem; height: 3rem;" role="status">
-					<span class="sr-only">Loading...</span>
-				</div>
-			</div>
-		</div>
-	</div>
+  {% block result %}
 
-	<!-- result table of search one string -->
-	<div class="row" v-show="result_string == 1" style="display: none;">
-		<div class="col-md-12">
-			<div class="card border-info mb-3">
-				<div class="card-header">
-					<h4>SEARCH BY STRING：<span v-html="input_string1"></span>　<span id="result_onestring_num"></span>RESULTS</h4>
-				</div>
-				<div class="card-body">
-					<table style="table-layout: fixed; width: 100%;">
-						<thead>
-							<tr class="table-active">
-								<th class="center" style="width:80%">CONTEXT</th>
-								<th class="center" style="width:20%">SOURCE</th>
-							</tr>
-						</thead>
-						<tbody id="table_onestring">
-							<!-- insert table here -->
-						</tbody>
-					</table>
-					<button class="btn btn-info" style="width: 100%;" id="btn_show_more0" onclick="show_more(0);">SHOW MORE</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!----- result table of search two strings ----->
-	<div class="row" v-show="result_string == 2" style="display: none;">
-		<div class="col-md-6">
-			<div class="card border-info mb-3">
-				<div class="card-header">
-					<h4>SEARCH BY STRING：<span v-html="input_string1"></span>　<span id="result_twostring_num1"></span>RESULTS</h4>
-				</div>
-				<div class="card-body">
-					<table style="table-layout: fixed; width: 100%;">
-						<thead>
-							<tr class="table-active">
-								<th class="center" style="width:80%">CONTEXT</th>
-								<th class="center" style="width:20%">SOURCE</th>
-							</tr>
-						</thead>
-						<tbody id="table_twostring1">
-							<!-- insert table here -->
-						</tbody>
-					</table>
-					<button class="btn btn-info" style="width: 100%;" id="btn_show_more1" onclick="show_more(1);">SHOW MORE</button>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="card border-info mb-3">
-				<div class="card-header">
-					<h4>SEARCH BY STRING：<span v-html="input_string2"></span>　<span id="result_twostring_num2"></span>RESULTS</h4>
-				</div>
-				<div class="card-body">
-					<table style="table-layout: fixed; width: 100%;">
-						<thead>
-							<tr class="table-active">
-								<th class="center" style="width:80%">CONTEXT</th>
-								<th class="center" style="width:20%">SOURCE</th>
-							</tr>
-						</thead>
-						<tbody id="table_twostring2">
-							<!-- insert table here -->
-						</tbody>
-					</table>
-					<button class="btn btn-info" style="width: 100%;" id="btn_show_more2" onclick="show_more(2);">SHOW MORE</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- scroll back to top -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="btn-group" style="width: 100%;">
-					<button class="btn btn-secondary" onclick="window.scrollTo({top:0,left:0,behavior:'smooth'}); this.blur();">⇧ GO TO TOP</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-</div> <!-- end of container -->
+  {% endblock%}
 
 
-<script>
-	// make navbar active
-	mode_corpus.classList.add("active");
+<script type="text/javascript">
 
-	// vue instance
-	var vue = new Vue({
-		el:'#container_corpus',
-		data:{
-			media: MEDIA,
-			mode: '',
-			sources: ['twitter','matichon','pantip'],
-			input_word1: '',
-			input_word2: '',
-			input_string1: '',
-			input_string2: '',
-			input_word2string: '',
-			n_left: '1',
-			n_right: '1',
-			use_multiple_words: false,
-			is_regex: false,
-			lang: 'th', // for how to use
-			result_word: 0,
-			result_string: 0
-		},
-		methods:{
-			add_source: function(event){
-				$(event.target).toggleClass('selected');
-				event.target.blur();
-				event.target.style.opacity = (event.target.classList.contains('selected'))? 1 :0.3;
-				this.sources = Array.from(document.querySelectorAll('#source_list > .selected')).map(x => x.name);
-			},
-			select_all: function(){
-				document.querySelectorAll('#source_list > .btn').forEach(x => x.style.opacity = 1);
-				document.querySelectorAll('#source_list > :not(.selected)').forEach(x => $(x).toggleClass('selected'));
-				this.sources = Array.from(document.querySelectorAll('#source_list > .selected')).map(x => x.name);
-			},
-			unselect_all: function(){
-				document.querySelectorAll('#source_list > .btn').forEach(x => x.style.opacity = 0.3);
-				document.querySelectorAll('#source_list > .selected').forEach(x => $(x).toggleClass('selected'));
-				this.sources = [];
-			}
-		}
-	})
-
-	// change language in ABOUT & HOW TO USE
-	function change_lang(elem){
-		elem.blur();
-		vue.lang = (vue.lang=='jp')? 'th' : 'jp';
-	}
-
-	// copy input form left <> right
-	function copy_input(to_where){
-		if(to_where=='toright' && vue.input_word1.trim()!=''){
-			vue.input_string1 = vue.input_word1.replace(/\|/g, '');
-			vue.input_string2 = vue.input_word2.replace(/\|/g, '');
-		}else if(to_where=='toleft' && vue.input_string1.trim()!=''){
-			vue.input_word1 = vue.input_string1;
-			vue.input_word2 = vue.input_string2;
-		}
-	}
-
-	function start_ajax(mode){
-		// VALIDATE FORM
-		if(vue.sources.length == 0){
-			alert("กรุณาเลือกแหล่งข้อมูล\nデータソースを選択して下さい"); return false;
-		}else if(mode=='word' && vue.input_word1.trim==''){
-			input_word1.focus(); return false;
-		}else if(mode=='string' && vue.input_string1.trim==''){
-			input_string1.focus(); return false;
-		}
-		// DELETE EXISTING CHART
-		if(mode=="word" || mode=="string"){
-			vue.result_word = 0;
-			vue.result_string = 0;
-			word_freq_canvas.style.display = "none"; // make chart invisible
-			word_freq_canvas.innerHTML = `<div class="col-md-12"><canvas id="wf_chart" style="width: 100%; height:300px;"></canvas></div>`;
-		}
-		// MAKE SPINNER VISIBLE & SCROLL
-		if(mode=='word'){
-			spinner_word.style.display = '';
-			window.scrollTo({top:spinner_word.getBoundingClientRect().top + window.pageYOffset - 170, behavior:"smooth"});
-		}else{
-			spinner_string.style.display = '';
-			window.scrollTo({top:spinner_string.getBoundingClientRect().top + window.pageYOffset - 170, behavior:"smooth"});
-		}
-		// START AJAX
-		vue.mode = mode;
-		$.ajax({
-			data : vue._data,
-			type: "POST",
-			dataType: "json",
-			cache: false,
-			timeout: 50000,
-			url : "/"
-		}).done(function(returnData){
-			// HIDE SPINNER
-			spinner_word.style.display = 'none';
-			spinner_string.style.display = 'none';
-			if(mode=='word'){
-				show_result_word(returnData);
-			}else if(mode=="string"){
-				show_result_string(returnData, mode);
-			}else if(mode=="word_to_string"){
-				show_result_string(returnData, mode);
-			}
-			
-			///// SAVE COOKIE /////
-			let history_num = document.cookie.match(/history\d\d?=/g);
-			history_num = (history_num == null)? 0 : history_num.length; // the number of recorded cookie
-			if(history_num > 0){ // slide hitory e.g. history12 -> history13
-				for(var i=Math.min(history_num, 10); i>0; i--){ // maximum 10 records
-					Cookies.set(`history${i}`, Cookies.get(`history${i-1}`), {expires: 20}); // keep 20 days
-				}
-			}
-			Cookies.set("history0", JSON.stringify(vue._data), {expires: 60}); // history0 = current one
-			set_history();
-		}).fail(function(){ // when fail to connet 
-			// hide rotating spinner
-			vue.searching_word = false;
-			vue.searching_string = false; 
-			alert('Connection Error');
-		});
-	}
-
-	function continue_search_word(elem){
-		document.body.focus();
-		vue.use_multiple_words.checked = true;
-		vue.input_word1 = elem.innerText;
-		vue.input_word2.value = '';
-		start_ajax('word');
-	}
-
-	function continue_search_string(elem){
-		document.body.focus();
-		vue.is_regex = false;
-		vue.input_string1 = elem.innerText;
-		vue.input_string2 = '';
-		vue.input_word2string = elem.previousElementSibling.previousElementSibling.innerText;
-		start_ajax('word_to_string');
-	}
-
+  mode_corpus.classList.add("active");
 </script>
 
-{% endraw %}
 {% endblock %}

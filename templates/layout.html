@@ -1,105 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:site" content="@non_tan" />
-	<meta property="og:url" content="https://thaicorpus.herokuapp.com/" />
-	<meta property="og:title" content="Thai Web Corpus" />
-	<meta property="og:description" content="Thai Web Corpus" />
-	<meta property="og:image" content="https:/thaicorpus.herokuapp.com/static/icon.png" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@non_tan" />
+  <meta property="og:url" content="https://thaicorpus.herokuapp.com/" />
+  <meta property="og:title" content="Thai Web Corpus" />
+  <meta property="og:description" content="Thai Web Corpus" />
+  <meta property="og:image" content="https:/thaicorpus.herokuapp.com/static/icon.png" />
 
-	<title>Thai Web Corpus</title>
+  <title>Thai Web Corpus</title>
 
-	<link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
-	<link rel="apple-touch-icon" href="static/favicon.ico">
-	<link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet"> <!-- Thai font -->
-	<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet"> <!-- Japanese font -->
-	<link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="static/custom.css">
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.js"></script>
-	<script>
-		// check media type
-		var ua = navigator.userAgent;
-		if(ua.indexOf("iPhone") > 0 || ua.indexOf("Android") > 0 && ua.indexOf("Mobile") > 0){
-			var MEDIA = "mobile";
-		}else if (ua.indexOf("iPad") > 0 || ua.indexOf("Android") > 0) {
-			var MEDIA = "tablet";
-		}else{
-			var MEDIA = "PC";
-		} 
-	</script>
+  <link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="static/favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet"> <!-- Thai font -->
+  <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet"> <!-- Japanese font -->
+  <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="static/custom.css">
 </head>
 
 <body>
 
 <header class="sticky-top">
-	<nav class="navbar navbar-expand-lg" style="background-color:#cf1111; padding: 10px 0px;"></nav>
-	<nav class="navbar navbar-expand-lg" style="background-color:#ffffff; padding: 10px 0px;"></nav>
-	<nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#192575; padding: 10px 1em 10px 2em;">
-		<a class="navbar-brand" href="/" data-toggle="tooltip" data-placement="bottom" title="Top Page">Thai Web Corpus</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarColor02">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item" id="mode_corpus">
-					<a href="/" class="nav-link" data-toggle="tooltip" data-placement="bottom"
-					title="สืบค้นตัวอย่างและความถี่จากคลังข้อมูลต่างๆ&lt;br&gt;様々な言語使用記録から、用例や頻度を検索します">corpus</a>
-				</li>
-				<li class="nav-item" id="mode_tokenize">
-					<a href="/tokenize" class="nav-link" data-toggle="tooltip" data-placement="bottom"
-					title="tokenize Thai text<br>การตัดคำ<br>タイ語分かち書き">tokenize</a>
-				</li>
-				<li class="nav-item" id="mode_g2p">
-					<a href="/g2p" class="nav-link" data-toggle="tooltip" data-placement="bottom"
-					title="Thai G2P (grapheme-to-phoneme)">G2P</a>
-				</li>
-				<li class="nav-item" id="mode_wordcloud">
-					<a href="/wordcloud" class="nav-link" data-toggle="tooltip" data-placement="bottom"
-					title="generate wordcloud of Thai text">wordcloud</a>
-				</li>
-				<li class="nav-item" id="mode_w2v">
-					<a class="nav-link" data-toggle="tooltip" data-placement="bottom"
-					title="word2vec ของแต่ละแหล่งข้อมูล&lt;br&gt;(under construction)">word2vec</a>
-				</li>
-				<li class="nav-item" id="mode_split">
-					<a href="/split" class="nav-link" data-toggle="tooltip" data-placement="bottom"
-					title="Thai Character Splitter">extra</a>
-				</li>
-			</ul>
-			<form class="form-inline my-2 my-lg-0" onsubmit="return search_word('input_navbar');">
-				<input class="form-control mr-sm-2" type="text" placeholder="under construction" id="input_navbar" autocomplete="off">
-				<button class="btn btn-secondary my-2 my-sm-0" type="button">search</button>
-			</form>
-		</div>
-	</nav>
-	<nav class="navbar navbar-expand-lg" style="background-color:#ffffff; padding: 10px 0px;"></nav>
-	<nav class="navbar navbar-expand-lg" style="background-color:#cf1111; padding: 10px 0px;"></nav>
+  <nav class="navbar navbar-expand-lg" style="background-color:#cf1111; padding: 10px 0px;"></nav>
+  <nav class="navbar navbar-expand-lg" style="background-color:#ffffff; padding: 10px 0px;"></nav>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#192575; padding: 10px 1em 10px 2em;">
+    <a class="navbar-brand" href="/" data-toggle="tooltip" data-placement="bottom" title="Top Page">Thai Web Corpus</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" id="mode_corpus">
+          <a href="/" class="nav-link" data-toggle="tooltip" data-placement="bottom"
+          title="สืบค้นตัวอย่างและความถี่จากคลังข้อมูลต่างๆ&lt;br&gt;様々な言語使用記録から、用例や頻度を検索します">corpus</a>
+        </li>
+        <li class="nav-item" id="mode_tokenize">
+          <a href="/tokenize" class="nav-link" data-toggle="tooltip" data-placement="bottom"
+          title="tokenize Thai text<br>การตัดคำ<br>タイ語分かち書き">tokenize</a>
+        </li>
+        <li class="nav-item" id="mode_g2p">
+          <a href="/g2p" class="nav-link" data-toggle="tooltip" data-placement="bottom"
+          title="Thai G2P (grapheme-to-phoneme)">G2P</a>
+        </li>
+        <li class="nav-item" id="mode_wordcloud">
+          <a href="/wordcloud" class="nav-link" data-toggle="tooltip" data-placement="bottom"
+          title="generate wordcloud of Thai text">wordcloud</a>
+        </li>
+        <li class="nav-item" id="mode_w2v">
+          <a class="nav-link" data-toggle="tooltip" data-placement="bottom"
+          title="word2vec ของแต่ละแหล่งข้อมูล&lt;br&gt;(under construction)">word2vec</a>
+        </li>
+        <li class="nav-item" id="mode_split">
+          <a href="/split" class="nav-link" data-toggle="tooltip" data-placement="bottom"
+          title="Thai Character Splitter">extra</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0" onsubmit="return search_word('input_navbar');">
+        <input class="form-control mr-sm-2" type="text" placeholder="under construction" id="input_navbar" autocomplete="off">
+        <button class="btn btn-secondary my-2 my-sm-0" type="button">search</button>
+      </form>
+    </div>
+  </nav>
+  <nav class="navbar navbar-expand-lg" style="background-color:#ffffff; padding: 10px 0px;"></nav>
+  <nav class="navbar navbar-expand-lg" style="background-color:#cf1111; padding: 10px 0px;"></nav>
 </header>
 
 <section>
 {% block content %}
 
-	<!-- contents of each page -->
+  <!-- contents of each page -->
 
 {% endblock %}
 </section>
 
 <br><br>
 <footer>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-			&copy; 2020 <a href="https://nozomiyamada.github.io/index.html" target="_blank">Nozomi Yamada</a> All Rights Reserved. <a href="/data" target="_blank">Data Details</a>
-			<p>
-				Stable Version: <a href="https://thaicorpus.herokuapp.com/">thaicorpus.herokuapp.com</a><br>
-				Faster Version: <a href="https://web.thaicorpus.tk/">web.thaicorpus.tk</a>
-			</p>
-			</div>
-		</div>
-	</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+      <!-- <h4>thanks for <a href="http://www.jtdic.com/" target="_blank">JTDic</a>, 
+        <a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus</a></h4> -->
+      &copy; 2020 <a href="https://nozomiyamada.github.io/index.html" target="_blank">Nozomi Yamada</a> All Rights Reserved. <a href="/data" target="_blank">Data Details</a>
+      <p>
+        Stable Version: <a href="https://thaicorpus.herokuapp.com/">thaicorpus.herokuapp.com</a><br>
+        Faster Version: <a href="https://web.thaicorpus.tk/">web.thaicorpus.tk</a>
+      </p>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script type="text/javascript" src="static/jquery-3.5.1.js"></script> <!-- jQuery -->
@@ -107,18 +97,25 @@
 <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script> <!-- FontAwsome -->
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script> <!-- js-cookie -->
 <script type="text/javascript" src="static/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="static/vocab.js"></script> <!-- js for corpus mode -->
-<script type="text/javascript" src="static/custom.js"></script> <!-- js for corpus mode -->
+<script type="text/javascript" src="static/corpus.js"></script> <!-- js for corpus mode -->
+<script src="static/vocab.js"></script> <!-- about 40000 words list -->
 <script type="text/javascript">
-	window.onload = function(){
-		try{
-			set_history();
-			show_datasource();
-		}catch{
+  window.onload = function(){
+    try{
+      set_history();
+      show_datasource();
+    }catch{
+    }
+  }
+  function show_hide(targetID){
+		let elem = document.getElementById(targetID);
+		if(elem.style.display=='none'){
+			$(elem).show('fast');
+		}else{
+			$(elem).hide('fast');
 		}
 	}
-	
-	function validate_file(){ // for tokenize & wordcloud
+  function validate_file(){ // for tokenize & wordcloud
 		if(input_file.files.length==0){ // no selected file
 			input_text.disabled = false;
 		}else{
@@ -129,38 +126,38 @@
 				input_file.value = ''; // reset file
 			}
 		}
-	}
+  }
 
-	///// plugins for chart js/////
-	Chart.plugins.register({
-		afterDatasetsDraw: function (chart, easing) {
-			// To only draw at the end of animation, check for easing === 1
-			var ctx = chart.ctx;
-			chart.data.datasets.forEach(function (dataset, i) {
-				var meta = chart.getDatasetMeta(i);
-				if (!meta.hidden) {
-					meta.data.forEach(function (element, index) {
-						// Draw the text in black, with the specified font
-						ctx.fillStyle = 'rgb(0, 0, 0)';
-						var fontSize = 12;
-						var fontStyle = 'normal';
-						var fontFamily = 'Sarabun';
-						ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-						// Just naively convert to string for now
-						var dataString = dataset.data[index].toString();
-						// Make sure alignment settings are correct
-						ctx.textAlign = 'center';
-						ctx.textBaseline = 'middle';
-						var padding = 5;
-						var position = element.tooltipPosition();
-						ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
-					});
-				}
-			});
-		}
-	});
-	$('body [data-toggle="popover"]').popover({html:true});
-	$('body [data-toggle="tooltip"]').tooltip({html:true});
+  ///// plugins for chart js/////
+  Chart.plugins.register({
+    afterDatasetsDraw: function (chart, easing) {
+      // To only draw at the end of animation, check for easing === 1
+      var ctx = chart.ctx;
+      chart.data.datasets.forEach(function (dataset, i) {
+        var meta = chart.getDatasetMeta(i);
+        if (!meta.hidden) {
+          meta.data.forEach(function (element, index) {
+            // Draw the text in black, with the specified font
+            ctx.fillStyle = 'rgb(0, 0, 0)';
+            var fontSize = 12;
+            var fontStyle = 'normal';
+            var fontFamily = 'Sarabun';
+            ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+            // Just naively convert to string for now
+            var dataString = dataset.data[index].toString();
+            // Make sure alignment settings are correct
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            var padding = 5;
+            var position = element.tooltipPosition();
+            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+          });
+        }
+      });
+    }
+  });
+  $('body [data-toggle="popover"]').popover();
+  $('body [data-toggle="tooltip"]').tooltip({html:true});
 </script>
 
 </body>
