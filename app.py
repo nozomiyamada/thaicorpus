@@ -8,7 +8,9 @@ from pythainlp import word_tokenize, Tokenizer
 from pythainlp.corpus import thai_stopwords
 PYTHAI_STOPWORDS = thai_stopwords()
 
-#from gensim.models import KeyedVectors
+### word2vec
+from gensim.models import word2vec, KeyedVectors
+MODEL_THAIRATH = KeyedVectors.load_word2vec_format('data/thairath_restricted.bin', unicode_errors='ignore', binary=True)
 
 import pandas as pd
 import numpy as np
@@ -56,7 +58,7 @@ def top_page():
     ########## Ajax ##########
     elif request.method == 'POST':
         try:
-            app.logger.info(request.form) # logging data to nohup.out
+            #app.logger.info(request.form) # logging data to nohup.out
             sources = request.form.getlist('sources[]') # list of data sources [source_twitter, source_pantip]
             sources = [s.replace('source_', '') for s in sources] # replace to [twitter, pantip]
 
@@ -311,6 +313,32 @@ def page_wordcloud():
             return render_template('wordcloud.html', text=text, stopwords=request.form['stopwords'], pngpath=pngpath, svgpath=svgpath)
         except:
             return render_template('wordcloud.html')
+
+
+################################################################################
+#####   WORD2VEC
+################################################################################
+
+@app.route("/w2v", methods=['GET', 'POST'])
+def page_w2v():
+    if request.method == 'GET':
+        return render_template('w2v.html', result=None)
+    else:
+        print(request.form)
+        pos = [x.strip() for x in request.form['input_pos'].split(',') if x.strip() != '']
+        neg = [x.strip() for x in request.form['input_neg'].split(',') if x.strip() != '']
+        if neg != []:
+            inputs = ' + '.join(pos) + ' - ' + ' - '.join(neg)
+        else:
+            inputs = ' + '.join(pos)
+        try:
+            result = MODEL_THAIRATH.most_similar(positive=pos, negative=neg, topn=10)
+            result = [(tpl[0], round(tpl[1],3)) for tpl in result]
+        except:
+            result = ['NOT FOUND', '']
+        return jsonify({'inputs':inputs, 'result':result})
+
+
 
 ################################################################################
 #####   SPLIT CHARACTER

@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<br>
+<div class="container" id="container_w2v">
+
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Word2Vec - cosine similarity</h2>
+			<form action="/w2v" method="POST" onsubmit="return false; search_w2v();">
+				<div class="btn-group mb-1">
+					<button class="btn btn-secondary" type="submit" onclick="search_w2v();">search</button>
+					<button class="btn btn-outline-secondary" type="reset" onclick="input_pos.value=''; input_neg.value=''; this.blur(); input_pos.focus()">clear</button>
+				</div>
+				<div class="form-check form-check-inline ml-2">
+					<input class="form-check-input" type="radio" name="transcription" value="thairath" id="radio1" checked>
+					<label class="form-check-label" for="radio1">Thairath</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="radio" name="transcription" value="matichon" id="radio2" disabled>
+					<label class="form-check-label" for="radio2">Matichon</label>
+				</div>
+				<div class="row">
+					<div class="col">
+						<input class="form-control mt-1" v-model="input_pos" id="input1" style="width:100%;" autocomplete="off" placeholder="positive (delimited by comma)">
+					</div>
+					<div class="col">
+						<input class="form-control mt-1" v-model="input_neg" id="input2" style="width:100%;" autocomplete="off" placeholder="negative (optional)">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<br>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card border-secondary" v-show="result != 0">
+				<div class="card-header" v-html="inputs"></div>
+				<div class="card-body">
+					<table class="table">
+						<thead>
+							<th>similar word</th>
+							<th>cosine similarity</th>
+						</thead>
+						<tbody v-for="row in result">
+							<tr>
+								<td v-html="row[0]"></td>
+								<td v-html="row[1]"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var vue = new Vue({
+		el:'#container_w2v',
+		data:{
+			input_pos: '',
+			input_neg: '',
+			inputs: '',
+			result: 0
+		}
+	})
+
+	function search_w2v(){
+		if(input1.value.trim()==''){input1.focus(); return;}
+		$.ajax({
+			data : {input_pos: vue.input_pos, input_neg: vue.input_neg},
+			type: "POST",
+			dataType: "json",
+			cache: false,
+			timeout: 20000,
+			url : "/w2v"
+		}).done(function(returnData){
+			vue.inputs = returnData.inputs;
+			vue.result = returnData.result;
+		}).fail(function(){
+			console.log('fail');
+		});
+	}
+
+	mode_w2v.classList.add('active');
+</script>
+
+{% endblock %}
