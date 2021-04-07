@@ -335,7 +335,7 @@ def page_w2v():
             result = MODEL_THAIRATH.most_similar(positive=pos, negative=neg, topn=10)
             result = [(tpl[0], round(tpl[1],3)) for tpl in result]
         except:
-            result = ['NOT FOUND', '']
+            result = [['NOT FOUND', '']]
         return jsonify({'inputs':inputs, 'result':result})
 
 
