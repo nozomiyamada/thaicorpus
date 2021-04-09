@@ -7,10 +7,14 @@
 	<div class="row">
 		<div class="col-md-12">
 			<h2>Word2Vec - cosine similarity</h2>
+			<p>
+				หาคำที่ cosine similarity สูงที่สุด 10 คำ<br>
+				สามารถ บวก/ลบ ได้ เช่น <span class="text-danger">โตเกียว - ญี่ปุ่น + จีน = ปักกิ่ง</span>
+			</p>
 			<form action="/w2v" method="POST" onsubmit="return false; search_w2v();">
 				<div class="btn-group mb-1">
 					<button class="btn btn-secondary" type="submit" onclick="search_w2v();">search</button>
-					<button class="btn btn-outline-secondary" type="reset" onclick="input_pos.value=''; input_neg.value=''; this.blur(); input_pos.focus()">clear</button>
+					<button class="btn btn-outline-secondary" type="button" v-on:click="reset()">clear</button>
 				</div>
 				<div class="form-check form-check-inline ml-2">
 					<input class="form-check-input" type="radio" name="transcription" value="thairath" id="radio1" checked>
@@ -22,10 +26,13 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<input class="form-control mt-1" v-model="input_pos" id="input1" style="width:100%;" autocomplete="off" placeholder="positive (delimited by comma)">
+						<input class="form-control mt-1" v-model="input_1" id="input1" style="width:100%;" autocomplete="off" placeholder="คำ">
 					</div>
 					<div class="col">
-						<input class="form-control mt-1" v-model="input_neg" id="input2" style="width:100%;" autocomplete="off" placeholder="negative (optional)">
+						<input class="form-control mt-1" v-model="input_2" id="input2" style="width:100%;" autocomplete="off" placeholder="- (optional)">
+					</div>
+					<div class="col">
+						<input class="form-control mt-1" v-model="input_3" id="input3" style="width:100%;" autocomplete="off" placeholder="+ (optional)">
 					</div>
 				</div>
 			</form>
@@ -61,17 +68,26 @@
 	var vue = new Vue({
 		el:'#container_w2v',
 		data:{
-			input_pos: '',
-			input_neg: '',
+			input_1: '',
+			input_2: '',
+			input_3: '',
 			inputs: '',
 			result: 0
+		},
+		methods:{
+			reset: function(){
+				this.input_1 = '';
+				this.input_2 = '';
+				input1.focus();
+			}
 		}
 	})
 
 	function search_w2v(){
+		document.activeElement.blur();
 		if(input1.value.trim()==''){input1.focus(); return;}
 		$.ajax({
-			data : {input_pos: vue.input_pos, input_neg: vue.input_neg},
+			data : {input_1: vue.input_1, input_2: vue.input_2, input_3: vue.input_3},
 			type: "POST",
 			dataType: "json",
 			cache: false,
