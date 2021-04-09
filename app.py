@@ -324,18 +324,24 @@ def page_w2v():
         return render_template('w2v.html', result=None)
     else:
         print(request.form)
-        pos = [x.strip() for x in request.form['input_pos'].split(',') if x.strip() != '']
-        neg = [x.strip() for x in request.form['input_neg'].split(',') if x.strip() != '']
-        if neg != []:
-            inputs = ' + '.join(pos) + ' - ' + ' - '.join(neg)
-        else:
-            inputs = ' + '.join(pos)
+        word1 = request.form['input_1'].strip()
+        word2 = request.form['input_2'].strip()
+        word3 = request.form['input_3'].strip()
+        input_equation = word1
+        pos = [word1]
+        neg = []
+        if word2 != '':
+            input_equation += f' - {word2}'
+            neg.append(word2)
+        if word3 != '':
+            input_equation += f' + {word3}'
+            pos.append(word3)
         try:
             result = MODEL_THAIRATH.most_similar(positive=pos, negative=neg, topn=10)
             result = [(tpl[0], round(tpl[1],3)) for tpl in result]
         except:
             result = [['NOT FOUND', '']]
-        return jsonify({'inputs':inputs, 'result':result})
+        return jsonify({'inputs':input_equation, 'result':result})
 
 
 
