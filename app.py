@@ -31,9 +31,10 @@ SQL_PASSWORD = os.environ["SQL_PASSWORD"]
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
     return response
+
 
 # web API https://thaicorpus.herokuapp.com/
 # 0. pip freeze > requirements.txt
@@ -42,8 +43,6 @@ def after_request(response):
 # 3. git push heroku master
 # 4. heroku logs --tail
 
-### word2vec
-#model_daily = KeyedVectors.load_word2vec_format('static/wv_daily.bin', unicode_errors='ignore', binary=True)
 
 ################################################################################
 #####   CORPUS
