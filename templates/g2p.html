@@ -35,10 +35,10 @@
 		<div class="col-md-12">
 			<div class="card border-secondary">
 				<div class="card-header">
-					{{ text }}
+					(( text ))
 				</div>
 				<div class="card-body">
-					<h5 id="result">{{ result }}</h5>
+					<h5 id="result">(( result ))</h5>
 				</div>
 				<div class="card-footer">
 					<button class="btn btn-secondary" value="copy" onclick="copy();">copy</button>
@@ -49,8 +49,8 @@
 </div>
 
 <script>
-	text = {{ text|tojson }};
-	radio_i = {{ radio_i|tojson }};
+	text = (( text|tojson ));
+	radio_i = (( radio_i|tojson ));
 	document.getElementsByName('transcription')[radio_i].checked = true;
 	input_text.value = text;
 </script>

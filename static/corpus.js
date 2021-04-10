@@ -10,22 +10,6 @@ if(ua.indexOf("iPhone") > 0 || ua.indexOf("Android") > 0 && ua.indexOf("Mobile")
 	var MEDIA = "PC";
 } 
 
-// change language in ABOUT & HOW TO USE
-function change_lang(elem){
-	elem.blur();
-	let jp_contents = document.querySelectorAll(".jp");
-	let th_contents = document.querySelectorAll(".th");
-	let btn_lang = document.querySelectorAll(".btn_lang");
-	if(jp_contents[0].style.display == ""){ // if current lang is Thai
-		jp_contents.forEach(x => x.style.display = "none");
-		th_contents.forEach(x => x.style.display = "");
-		btn_lang.forEach(x => x.innerText = "日本語");
-	}else{
-		jp_contents.forEach(x => x.style.display = "");
-		th_contents.forEach(x => x.style.display = "none");
-		btn_lang.forEach(x => x.innerText = "ภาษาไทย");
-	}
-}
 
 // copy input form left <> right
 function copy_input(leftright){
