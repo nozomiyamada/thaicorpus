@@ -54,7 +54,7 @@ def after_request(response):
 
 @app.route("/", methods=['GET', 'POST'])
 def top_page():
-    # top page
+    ### TOP PAGE ###
     if request.method == 'GET':
         return render_template('result.html')
 
@@ -66,7 +66,7 @@ def top_page():
             sources = [s.replace('source_', '') for s in sources] # replace to [twitter, pantip]
 
             if request.form['media'] == 'mobile': # if mobile, show fewer results
-                max_len = 300 # for string search
+                max_len = 300 # max length of results (string search)
             else:
                 max_len = 500
 

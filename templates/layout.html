@@ -19,6 +19,17 @@
   <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="static/custom.css">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.js"></script>
+  <script>
+    // check media type
+    var ua = navigator.userAgent;
+    if(ua.indexOf("iPhone") > 0 || ua.indexOf("Android") > 0 && ua.indexOf("Mobile") > 0){
+      var MEDIA = "mobile";
+    }else if (ua.indexOf("iPad") > 0 || ua.indexOf("Android") > 0) {
+      var MEDIA = "tablet";
+    }else{
+      var MEDIA = "PC";
+    } 
+  </script>
 </head>
 
 <body>

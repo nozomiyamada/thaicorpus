@@ -254,7 +254,7 @@
               <span class="input-group-text" data-toggle="tooltip" data-placement="top"
                 title="how many words to use in the counting n-gram frequency<br>if n=1, count the number of bigram (xxx, input word)">left words</span>
             </div>
-            <select class="form-control" id="n_left">
+            <select class="form-control" v-model="n_left">
               <option value="1" selected>1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -264,7 +264,7 @@
               <span class="input-group-text" data-toggle="tooltip" data-placement="top"
                 title="how many words to use in the counting n-gram frequency<br>if n=2, count the number of trigram (input word, xxx, xxx)">right words</span>
             </div>
-            <select class="form-control" id="n_right">
+            <select class="form-control" v-model="n_right">
               <option value="1" selected>1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -272,14 +272,14 @@
             </select>
           </div>
           <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="use_multiple_words">
+            <input type="checkbox" class="custom-control-input" id="use_multiple_words" v-model="use_multiple_words">
             <label class="custom-control-label" for="use_multiple_words" data-toggle="tooltip" data-placement="top"
               title="If checked, you can search results regarding multiple words as a single word.<br>Each word must be delimited by vertical bar | e.g. หิว|แล้ว">use multiple words as query</label>
           </div>
         </div>
       </div>
-      <!-- search button -->
-      <button class="btn btn-danger mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="this.blur();start_ajax('word');">
+      <!-- SEARCH BUTTON -->
+      <button class="btn btn-danger mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="start_ajax('word');">
         <i class="fas fa-search"></i> SEARCH BY WORD
       </button>
     </div>
@@ -326,13 +326,13 @@
           </div>
           <!-- regex switch -->
           <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="switch_regex">
+            <input type="checkbox" class="custom-control-input" id="switch_regex" v-model="use_regex">
             <label class="custom-control-label" for="switch_regex">use Regular Expression in search&nbsp;&nbsp;</label>
           </div>
         </div>
       </div>
-      <!-- search button -->
-      <button class="btn btn-primary mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="this.blur();start_ajax('string');">
+      <!-- SEARCH BUTTON -->
+      <button class="btn btn-primary mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="start_ajax('string');">
         <i class="fas fa-search"></i> SEARCH BY STRING
       </button>
 		</div>
@@ -349,44 +349,104 @@
       <div class="card border-secondary ">
         <div class="card-header">
           SELECT DATA SOURCES
-          <span class="pointer" style="float:right;" onclick="unselect_all();">&nbsp;unselect all</span>
-          <span class="pointer" style="float:right;" onclick="select_all();">select all&nbsp;/</span>
+          <span class="pointer" style="float:right;" v-on:click="unselect_all()">&nbsp;unselect all</span>
+          <span class="pointer" style="float:right;" v-on:click="select_all()">select all&nbsp;/</span>
         </div>
         <div class="card-body">
-          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_twitter" onclick="set_source(this);">Twitter</button>
-          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_matichon" onclick="set_source(this);">Matichon</button>
-          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_thairath" onclick="set_source(this);">Thairath</button>
-          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_dailynews" onclick="set_source(this);">Dailynews</button>
-          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_NHK" onclick="set_source(this);">NHK</button>
-          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_pantip" onclick="set_source(this);">Pantip</button>
+          <source-button source_name="twitter" id="btn_twitter"></source-button>
+          <source-button source_name="matichon" id="btn_matichon"></source-button>
+          <source-button source_name="thairath"></source-button>
+          <source-button source_name="dailynews"></source-button>
+          <source-button source_name="NHK"></source-button>
+          <source-button source_name="pantip"></source-button>
+        </div>
+      </div>
+    </div>
+  </div> <!----- END OF INPUT FORM ----->
+
+
+  <!-------------------------------------------------------------------------------->
+	<!-- RESULT OF SEARCH BY WORD -->
+	<!-------------------------------------------------------------------------------->
+	<!-- loading spinner -->
+  <div class="row" id="loading_word" v-show="word_searching">
+    <div class="col-md-12 ">
+      <div class="text-center">
+        <div class="spinner-border text-danger m-5" style="width: 3rem; height: 3rem;" role="status">
+          <span class="sr-only">Loading...</span>
         </div>
       </div>
     </div>
   </div>
+  
+	<!-- canvas for chart of word frequecy -->
+	<div class="row result_row mb-3" id="word_freq_canvas" style="display: none;">
+		<div class="col-md-12">
+			<canvas id="wf_chart" style="width: 100%; height:300px;">
+			</canvas>
+		</div>
+	</div>
+  
+	<!---------- RESULT OF SEARCH BY WORD (ONE INPUT) ---------->
+	<div class="row result_row" v-show="result.oneword != 0"> 
+		<div class="col-md-12">
+			<div class="card border-info mb-3">
+				<div class="card-header">
+					<h4>SEARCH BY WORD：<span v-html="input_word1"></span></h4>
+				</div>
+				<div class="card-body">
+					<table style="table-layout: fixed; width: 100%;">
+						<thead>
+							<tr class="table-active">
+								<th class="center" style="width:38%;">LEFT <span v-html="n_left"></span> WORDS</th>
+								<th class="center" style="width:12%;"></th>
+								<th class="center" style="width:38%;">RIGHT <span v-html="n_right"></span> WORDS</th>
+								<th class="center" style="width:12%;"></th>
+							</tr>
+						</thead>
+						<tbody v-for="row in result.oneword">
+							<!-- insert table here -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <source-button source_name="test"></source-button>
-</div> <!----- END OF INPUT FORM ----->
-
-
-
-  {% block result %}
-
-  {% endblock%}
-
+</div>
 
 <script type="text/javascript">
-
-  /////  DATA SOURCE COMPONENT  /////
 
   var vue = new Vue({
 		el:'#container_corpus',
 		data: {
+      mode: "word",
+      media: MEDIA,
 			lang_is_th: true,
-      input_string1: '',
-      input_string2: '',
       input_word1: '',
       input_word2: '',
-      sources: ['twitter','matichon','pantip']
+      n_left: '1',
+      n_right: '1',
+      use_multiple_words: false,
+      input_string1: '',
+      input_string2: '',
+      use_regex: false,      
+      sources: {
+        twitter: false,
+        matichon: false,
+        thairath: false,
+        dailynews: false,
+        NHK: false,
+        pantip: false
+      },
+      word_searching: false,
+      string_searching: false,
+      result: {
+        oneword: 0,
+        twoword: 0,
+        onestring: 0,
+        twostring: 0,
+      }
 		},
 		methods: {
       select_lang: function(){
@@ -400,28 +460,67 @@
       copy_to_left: function(){
         this.input_word1 = this.input_string1;
         this.input_word2 = this.input_string2;
+      },
+      select_all: function(){
+        for(var elem of document.querySelectorAll('.source')){
+          if(elem.style.opacity!=1){elem.click();}
+        }
+      },
+      unselect_all: function(){
+        for(var elem of document.querySelectorAll('.source')){
+          if(elem.style.opacity==1){elem.click();}
+        }
       }
 		},
     components: {
       'source-button': {
         data: function(){
-          return {selected: false, name: "source_name"}
+          return {is_selected: false, name: this.source_name}
         },
         template: `
-          <button type="button" class="btn btn-secondary source mb-1" v-if="selected" style="opacity: 1;" v-on:click="select_source()">{{source_name}}</button>
-          <button type="button" class="btn btn-secondary source mb-1" v-else style="opacity: 0.3;" v-on:click="select_source()">{{source_name}}</button>`,
+          <button type="button" class="btn btn-secondary source mb-1" v-if="is_selected" style="opacity: 1;" v-on:click="unselect()">{{source_name}}</button>
+          <button type="button" class="btn btn-secondary source mb-1" v-else style="opacity: 0.3;" v-on:click="select()">{{source_name}}</button>`,
         props: ['source_name'],
         methods: {
-          select_source: function(){
-            this.selected = !this.selected;
+          select: function(){
+            this.is_selected = true;
+            vue.sources[this.name] = true,
             document.activeElement.blur();
-          }
+          },
+          unselect: function(){
+            this.is_selected = false;
+            vue.sources[this.name] = false;
+            document.activeElement.blur();
+          },
         }
       }
     }
 	})
 
+  function start_ajax(mode){
+    // if no source is checked, alert
+    if(Object.values(vue.sources).every(x => x==false)){
+      alert("กรุณาเลือกแหล่งข้อมูล\nデータソースを選択して下さい"); return false;
+    }
+    // validate input form : mode = "word" or "string"
+    if(mode=="word" && vue.input_word1.trim()==""){
+      input_word1.focus(); return false;
+    }else if(mode=="string" && vue.input_string1.trim() == ""){
+      input_string1.focus(); return false;
+    }else{ // AJAX
+      $.ajax({
+        data : vue._data,
+        type: "POST",
+        dataType: "json",
+        cache: false,
+        timeout: 50000,
+        url : "/"
+      })
+    }
+  }
   mode_corpus.classList.add("active");
+  btn_twitter.click();
+  btn_matichon.click()
 </script>
 
 {% endblock %}
