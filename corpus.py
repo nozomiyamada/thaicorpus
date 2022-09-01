@@ -1,4 +1,4 @@
-import os, sys, re, collections, csv, glob, time, itertools
+import os, re, collections, time, itertools
 import mysql.connector
 
 ##### ENVIRONMENT VARIABLES #####
