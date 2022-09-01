@@ -1,5 +1,60 @@
 ////////////////////////////// GENERAL //////////////////////////////
 
+// check media type
+var ua = navigator.userAgent;
+if(ua.indexOf("iPhone") > 0 || ua.indexOf("Android") > 0 && ua.indexOf("Mobile") > 0){
+	var MEDIA = "mobile";
+}else if (ua.indexOf("iPad") > 0 || ua.indexOf("Android") > 0) {
+	var MEDIA = "tablet";
+}else{
+	var MEDIA = "PC";
+} 
+
+// change language in ABOUT & HOW TO USE
+function change_lang(elem){
+	elem.blur();
+	let jp_contents = document.querySelectorAll(".jp");
+	let th_contents = document.querySelectorAll(".th");
+	let btn_lang = document.querySelectorAll(".btn_lang");
+	if(jp_contents[0].style.display == ""){ // if current lang is Thai
+		jp_contents.forEach(x => x.style.display = "none");
+		th_contents.forEach(x => x.style.display = "");
+		btn_lang.forEach(x => x.innerText = "日本語");
+	}else{
+		jp_contents.forEach(x => x.style.display = "");
+		th_contents.forEach(x => x.style.display = "none");
+		btn_lang.forEach(x => x.innerText = "ภาษาไทย");
+	}
+}
+
+// copy input form left <> right
+function copy_input(leftright){
+	if(leftright=='toright' && input_word1.trim()!=""){
+		input_string1.value = input_word1.value.replace(/\|/g, '');
+		input_string2.value = input_word2.value.replace(/\|/g, '');
+	}else if(leftright=='toleft' && input_string1.trim()!=""){
+		input_word1.value = input_string1.value;
+		input_word2.value = input_string2.value;
+	}
+}
+
+// toggle select/unselected of each data source
+function set_source(source_btn){
+	$(source_btn).toggleClass("selected_source");
+	source_btn.blur();
+	if(source_btn.classList.contains("selected_source")){
+		source_btn.style.opacity = 1;
+	}else{
+		source_btn.style.opacity = 0.3;
+	}
+}
+function unselect_all(){
+	document.querySelectorAll('.selected_source').forEach(x => set_source(x));
+}
+function select_all(){
+	document.querySelectorAll('.source:not(.selected_source)').forEach(x => set_source(x));
+}
+
 // make datalist for input
 function make_list(n, present_input){
 	// select datalist for input1 or 2 
@@ -18,69 +73,6 @@ function make_list(n, present_input){
 	}
 }
 
-////////////////////////////// COOKIE //////////////////////////////
-
-function set_history(){
-	let histories = document.cookie.match(/history\d\d?=/g); // history0 ~ history20 (max)
-	history_num = (histories == null)? 0 : histories.length;
-	if(history_num !== 0){
-		history_table.innerHTML = ""; // initialize history table
-		for(var i=0; i<history_num; i++){
-			// get sent data as dict : "{"mode":"word","sources":["source_twitter","source_matichon"],"input1":"อาหาร","input2":"","input3":"",
-			// "n_left":"1","n_right":"1","use_multiple_words":false,"is_regex":false,"media":"PC"}"
-			dic = JSON.parse(Cookies.get(`history${i}`)); 
-			if(dic.mode=="word"){
-				history_table.innerHTML +=
-				`<tr>
-					<td class="history" onclick="set_input(${i});">
-					${(dic.input1 + " " + dic.input2).trim()}</td>
-					<td class="table-danger">SEARCH BY WORD</td>
-				</tr>`;
-			}else{
-				history_table.innerHTML +=
-				`<tr>
-					<td class="history" onclick="set_input(${i});">
-					${(dic.input1 + " " + dic.input2).trim()}</td>
-					<td class="table-primary">SEARCH BY STRING</td>
-				</tr>`;
-			}
-		}
-	}
-}
-
-// function for set parameter when search from history
-function set_input(i){
-	dic = JSON.parse(Cookies.get(`history${i}`));
-	mode = dic.mode;
-	if(mode=="word"){
-		input_word1.value = dic.input1;
-		input_word2.value = dic.input2;
-	}else if(mode=="string"){
-		input_string1.value = dic.input1;
-		input_string2.value = dic.input2;
-	}else if(mode=="word_to_string"){
-		input_string1.value = dic.input1;
-		input_string2.value = dic.input2;
-		input3 = dic.input3;
-	}
-	switch_regex.checked = dic.is_regex;
-	use_multiple_words.checked = dic.use_multiple_words;
-	// data source
-	let ALL_SOURCES = Array.from(document.querySelectorAll(".source")).map(x => x.id);
-	unselect_all();
-	for(var source of ALL_SOURCES){
-		if(dic.sources.includes(source)){
-			set_source(document.getElementById(source));
-		}
-	}
-	// option
-	n_left.value = dic.n_left;
-	n_right.value = dic.n_right;
-	// close hitory modal
-	$("#modal4").modal("hide");
-	start_ajax(mode);
-}
-
 ////////// Press Enter Key to search //////////
 document.addEventListener('keyup', function(event){
 	if(event.keyCode == '13'){
@@ -93,6 +85,26 @@ document.addEventListener('keyup', function(event){
 });
 
 ////////////////////////////// SEND POST REQUEST BY AJAX //////////////////////////////
+
+function validate_form(mode){
+	// if no source is checked, alert
+	let is_checked_at_least_one = document.querySelectorAll(".selected_source").length > 0;
+	if(!is_checked_at_least_one){
+		alert("กรุณาเลือกแหล่งข้อมูล\nデータソースを選択して下さい");
+		return false;
+	}
+	// validate input form : mode = word or string
+	// no input -> return false
+	if(mode=="word" && input_word1.value.trim()==""){
+		input_word1.focus();
+		return false;
+	}else if(mode=="string" && input_string1.value.trim() == ""){
+		input_string1.focus();
+		return false;
+	}else{
+		return true;
+	}
+}
 
 function start_ajax(mode){
 	// validate form, return if false 
@@ -150,16 +162,6 @@ function start_ajax(mode){
 			table_onestring.innerHTML = ""; // initialize
 			show_result_string(returnData, mode);
 		}
-		///// save cookie /////
-		let history_num = document.cookie.match(/history\d\d?=/g);
-		history_num = (history_num == null)? 0 : history_num.length; // the number of recorded cookie
-		if(history_num > 0){ // slide hitory e.g. history12 -> history13
-			for(var i=Math.min(history_num, 20); i>0; i--){ // maximum 20 records
-				Cookies.set(`history${i}`, Cookies.get(`history${i-1}`), {expires: 60}); // keep 60 days
-			}
-		}
-		Cookies.set("history0", JSON.stringify(data_to_send), {expires: 60}); // history0 = current one
-		set_history();
 	}).fail(function(){ // when fail to connet 
 		// hide rotating spinner
 		loading_word.style.display = "none";
@@ -176,7 +178,7 @@ function show_result_word(data){
 	//console.log(data)
 	word_freq_canvas.style.display = "";
 	var chartChart = document.getElementById("wf_chart");
-	////////// make dataset for chart //////////
+	////////// make dataset //////////
 	var word_freq1 = data.word_freq1; // receive word freq & search time as array: [[source, wf, time],...]
 	var query1 = input_word1.value;
 	if(input_word2.value.trim() == ''){

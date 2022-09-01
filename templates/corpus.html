@@ -4,7 +4,7 @@
 
 
 <br>
-<div class="container" id="container_corpus">
+<div class="container">
   <!-------------------------------------------------------------------------------->
   <!-- FIRST ROW : MODALS -->
   <!-------------------------------------------------------------------------------->
@@ -20,9 +20,6 @@
         <label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal3">
           <input type="checkbox" autocomplete="off"> DATA SOURCES
         </label>
-        <label class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal4">
-          <input type="checkbox" autocomplete="off"> SEARCH HISTORY
-        </label>
       </div>
 
       <!----- MODAL 1 : ABOUT ----->
@@ -31,25 +28,23 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="label1">
-                <span v-if="lang_is_th">เกี่ยวกับคลังข้อมูลนี้</span> <!-- THAI -->
-                <span v-else>このコーパスについて</span> <!-- JAPANESE -->
+                <span class="th">เกี่ยวกับคลังข้อมูลนี้</span>
+                <span class="jp" style="display:none">このコーパスについて</span>
               </h5>
-              &nbsp;&nbsp;&nbsp;
-              <button type="button" class="btn btn-outline-secondary" v-if="lang_is_th" v-on:click="select_lang()">日本語</button> <!-- THAI -->
-              <button type="button" class="btn btn-outline-secondary" v-else v-on:click="select_lang()">ภาษาไทย</button> <!-- JAPANESE -->
+              &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-outline-secondary btn_lang" onclick="change_lang(this);">日本語</button>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <div v-if="lang_is_th">
+              <div class="th">
                 Thai Web Corpus (TWC) เป็นคลังข้อมูลภาษาไทยในเว็บสำหรับผู้เรียนภาษาไทย(และนักวิชาการ)
                 ผู้ใช้บริการสามารถสืบค้นจากคลังข้อมูลได้หลายแบบ เช่น ตัวอย่างประโยคพร้อมด้วยบริบท หรือคำที่มักจะปรากฏร่วม
                 เนื่องจากคลังข้อมูลเป็น "ชุดข้อมูลของการใช้งานจริง" จึงอาจมีภาษาไทยที่ไม่มาตรฐานด้วย
                 หากต้องการใช้คลังข้อมูลที่มีจำนวนข้อมูลและฟังก์ชันจำนวนมาก แนะนำให้ใช้ <a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus (TNC)</a><br><br>
                 แอปพลิเคชันนี้สร้างโดย Python3.7 (Flask), JavaScript, MySQL8.0 และใช้ <a href="https://pypi.org/project/pythainlp/" target="_blank">PyThaiNLP</a> ในการตัดคำ
               </div>
-              <div v-else>
+              <div class="jp" style="display: none">
                 Thai Web Corpus (TWC) はタイ語学習者向けに作られたタイ語のウェブコーパス(言語使用記録集)です。
                 実際にどのような文脈で用いるか、どのような単語と一緒になりやすいかなどを、コーパスに基づいて確認することが可能です。
                 ただし、あくまで「ウェブ上での生の言語使用記録」であり、辞書のような「標準的タイ語」だけとは限らないという点をご了承下さい。
@@ -67,18 +62,16 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="label2">
-                <span v-if="lang_is_th">วิธีใช้</span> <!-- THAI -->
-                <span v-else>使い方</span> <!-- JAPANESE -->
+                <span class="th">วิธีใช้</span>
+                <span class="jp" style="display:none">使い方</span>
               </h5>
-              &nbsp;&nbsp;&nbsp;
-              <button type="button" class="btn btn-outline-secondary" v-if="lang_is_th" v-on:click="select_lang()">日本語</button> <!-- THAI -->
-              <button type="button" class="btn btn-outline-secondary" v-else v-on:click="select_lang()">ภาษาไทย</button> <!-- JAPANESE -->
+              &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-outline-secondary btn_lang" onclick="change_lang(this);">日本語</button>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <div v-if="lang_is_th">
+              <div class="th">
                 วิธีสืบค้นมีสองแบบ
                 <ol>
                   <li><span class="text-danger">SEARCH BY WORD</span> (สืบค้นโดยคำ): เป็นสถิติของ 1.ความถี่ของคำที่ใส่ในแต่ละแหล่งข้อมูล(ต่อล้านคำ) 2.การปรากฏร่วมทั้งด้านซ้ายและด้านขวา(n-gram)<br>
@@ -102,7 +95,7 @@
                   </li>
                 </ul>
               </div>
-              <div v-else>
+              <div class="jp" style="display: none;">
                 検索方法は2通りあります。
                 <ol>
                   <li><span class="text-danger">SEARCH BY WORD</span> (語彙検索)：入力した語彙の、「選択したデータソース内での頻度(100万語あたり)」「その語彙の左右にどのような語句が共起するか (n-gram)」の統計情報を検索。あくまで単語単位の検索なので、そのままでは2語以上のフレーズを入れてもヒットしませんが、オプションの "use multiple words as input" をチェックし、2語以上の語を "ประเทศ|ญี่ปุ่น" のように | で区切ることで、一つの単語とみなして検索可能です。結果をクリックすれば、そのまま続けて複数語検索/文字列検索できます。"__" は空白(スペース)を表しています。</li>
@@ -184,28 +177,6 @@
         </div>
       </div>
 
-      <!----- MODAL 4 : HISTORY ----->
-      <div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="label4" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="label4">
-                SEARCH HISTORY
-              </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <table class="table" style="table-layout: fixed; width: 100%; text-align: center;">
-                <tbody id="history_table">
-                  <!-- insert history here by function "set_history()" -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div> 
     </div>
   </div> <!-- end of modal rows -->
 
@@ -222,20 +193,18 @@
       <div class="card border-danger mb-2" style="min-height: 180px;">
         <div class="card-header">
           <span data-toggle="tooltip" data-placement="top" title="search by tokenized word(s)<br>show results of n-gram">SEARCH BY WORD</span>
-          <span class="pointer" style="float:right;" v-on:click="copy_to_right()">copy to right ▶︎</span>
+          <span class="pointer" style="float:right;" onclick="copy_input('toright');">copy to right ▶︎</span>
         </div>
         <div class="card-body">
           <div class="input-group mb-1">
-            <input type="input-group-text" class="form-control" id="input_word1" v-model="input_word1" 
-              autocomplete="off" list="datalist1" placeholder="word1" oninput="make_list(1, this.value);">
+            <input type="input-group-text" class="form-control" id="input_word1" autocomplete="off" list="datalist1" placeholder="word1" oninput="make_list(1, this.value);">
             <datalist id="datalist1"></datalist>
             <div class="input-group-append pointer">
               <button class="btn btn-outline-danger" onclick="input_word1.value='';input_word1.focus();">clear</button>
             </div>
           </div>
           <div class="input-group">
-            <input type="input-group-text" class="form-control" id="input_word2" v-model="input_word2" 
-              autocomplete="off" list="datalist2" placeholder="word2 to compare (if any)" oninput="make_list(2, this.value);">
+            <input type="input-group-text" class="form-control" id="input_word2" autocomplete="off" list="datalist2" placeholder="word2 to compare (if any)" oninput="make_list(2, this.value);">
             <datalist id="datalist2"></datalist>
             <div class="input-group-append pointer">
               <button class="btn btn-outline-danger" onclick="input_word2.value='';input_word2.focus();">clear</button>
@@ -243,7 +212,7 @@
           </div>
         </div>
       </div>
-      <!-- OPTION OF SEARCH BY WORD -->
+      <!-- option -->
       <div class="card border-danger mb-2">
         <div class="card-header pointer" style="height: 2em; padding: 0.2em 1em" onclick="show_hide('option_search_word');">
           ▼ options
@@ -254,7 +223,7 @@
               <span class="input-group-text" data-toggle="tooltip" data-placement="top"
                 title="how many words to use in the counting n-gram frequency<br>if n=1, count the number of bigram (xxx, input word)">left words</span>
             </div>
-            <select class="form-control" v-model="n_left">
+            <select class="form-control" id="n_left">
               <option value="1" selected>1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -264,7 +233,7 @@
               <span class="input-group-text" data-toggle="tooltip" data-placement="top"
                 title="how many words to use in the counting n-gram frequency<br>if n=2, count the number of trigram (input word, xxx, xxx)">right words</span>
             </div>
-            <select class="form-control" v-model="n_right">
+            <select class="form-control" id="n_right">
               <option value="1" selected>1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -272,14 +241,14 @@
             </select>
           </div>
           <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="use_multiple_words" v-model="use_multiple_words">
+            <input type="checkbox" class="custom-control-input" id="use_multiple_words">
             <label class="custom-control-label" for="use_multiple_words" data-toggle="tooltip" data-placement="top"
               title="If checked, you can search results regarding multiple words as a single word.<br>Each word must be delimited by vertical bar | e.g. หิว|แล้ว">use multiple words as query</label>
           </div>
         </div>
       </div>
-      <!-- SEARCH BUTTON -->
-      <button class="btn btn-danger mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="start_ajax('word');">
+      <!-- search button -->
+      <button class="btn btn-danger mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="this.blur();start_ajax('word');">
         <i class="fas fa-search"></i> SEARCH BY WORD
       </button>
     </div>
@@ -291,17 +260,17 @@
       <div class="card border-primary mb-2" style="min-height: 180px;">
         <div class="card-header">
           <span data-toggle="tooltip" data-placement="top" title="search by any string(s)<br>it may take a long time">SEARCH BY STRING</span>
-          <span class="pointer" style="float:right;" v-on:click="copy_to_left()">◀︎ copy to left</span>
+          <span class="pointer" style="float:right;" onclick="copy_input('toleft');">◀︎ copy to left</span>
         </div>
         <div class="card-body">
           <div class="input-group mb-1">
-            <input type="input-group-text" class="form-control" id="input_string1" v-model="input_string1" autocomplete="off" placeholder="string1">
+            <input type="input-group-text" class="form-control" id="input_string1" autocomplete="off" placeholder="string1">
             <div class="input-group-append">
               <button class="btn btn-outline-primary" onclick="input_string1.value='';input_string1.focus()">clear</button>
             </div>
           </div>
           <div class="input-group mb-1">
-            <input type="input-group-text" class="form-control" id="input_string2" v-model="input_string2" autocomplete="off" placeholder="string2 to compare (if any)">
+            <input type="input-group-text" class="form-control" id="input_string2" autocomplete="off" placeholder="string2 to compare (if any)">
             <div class="input-group-append">
               <button class="btn btn-outline-primary" onclick="input_string2.value='';input_string2.focus()">clear</button>
             </div>
@@ -326,13 +295,13 @@
           </div>
           <!-- regex switch -->
           <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="switch_regex" v-model="use_regex">
+            <input type="checkbox" class="custom-control-input" id="switch_regex">
             <label class="custom-control-label" for="switch_regex">use Regular Expression in search&nbsp;&nbsp;</label>
           </div>
         </div>
       </div>
-      <!-- SEARCH BUTTON -->
-      <button class="btn btn-primary mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="start_ajax('string');">
+      <!-- search button -->
+      <button class="btn btn-primary mb-2" style="width: 100%; height:60px; font-size: 1.3em;" onclick="this.blur();start_ajax('string');">
         <i class="fas fa-search"></i> SEARCH BY STRING
       </button>
 		</div>
@@ -349,178 +318,33 @@
       <div class="card border-secondary ">
         <div class="card-header">
           SELECT DATA SOURCES
-          <span class="pointer" style="float:right;" v-on:click="unselect_all()">&nbsp;unselect all</span>
-          <span class="pointer" style="float:right;" v-on:click="select_all()">select all&nbsp;/</span>
+          <span class="pointer" style="float:right;" onclick="unselect_all();">&nbsp;unselect all</span>
+          <span class="pointer" style="float:right;" onclick="select_all();">select all&nbsp;/</span>
         </div>
         <div class="card-body">
-          <source-button source_name="twitter" id="btn_twitter"></source-button>
-          <source-button source_name="matichon" id="btn_matichon"></source-button>
-          <source-button source_name="thairath"></source-button>
-          <source-button source_name="dailynews"></source-button>
-          <source-button source_name="NHK"></source-button>
-          <source-button source_name="pantip"></source-button>
-        </div>
-      </div>
-    </div>
-  </div> <!----- END OF INPUT FORM ----->
-
-
-  <!-------------------------------------------------------------------------------->
-	<!-- RESULT OF SEARCH BY WORD -->
-	<!-------------------------------------------------------------------------------->
-	<!-- loading spinner -->
-  <div class="row" id="loading_word" v-show="word_searching">
-    <div class="col-md-12 ">
-      <div class="text-center">
-        <div class="spinner-border text-danger m-5" style="width: 3rem; height: 3rem;" role="status">
-          <span class="sr-only">Loading...</span>
+          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_twitter" onclick="set_source(this);">Twitter</button>
+          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_matichon" onclick="set_source(this);">Matichon</button>
+          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_thairath" onclick="set_source(this);">Thairath</button>
+          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_dailynews" onclick="set_source(this);">Dailynews</button>
+          <button type="button" class="btn btn-secondary source mb-1" style="opacity: 0.3;" id="source_NHK" onclick="set_source(this);">NHK</button>
+          <button type="button" class="btn btn-secondary source mb-1 selected_source" style="opacity: 1;" id="source_pantip" onclick="set_source(this);">Pantip</button>
         </div>
       </div>
     </div>
   </div>
-  
-	<!-- canvas for chart of word frequecy -->
-	<div class="row result_row mb-3" id="word_freq_canvas" style="display: none;">
-		<div class="col-md-12">
-			<canvas id="wf_chart" style="width: 100%; height:300px;">
-			</canvas>
-		</div>
-	</div>
-  
-	<!---------- RESULT OF SEARCH BY WORD (ONE INPUT) ---------->
-	<div class="row result_row" v-show="result.oneword != 0"> 
-		<div class="col-md-12">
-			<div class="card border-info mb-3">
-				<div class="card-header">
-					<h4>SEARCH BY WORD：<span v-html="input_word1"></span></h4>
-				</div>
-				<div class="card-body">
-					<table style="table-layout: fixed; width: 100%;">
-						<thead>
-							<tr class="table-active">
-								<th class="center" style="width:38%;">LEFT <span v-html="n_left"></span> WORDS</th>
-								<th class="center" style="width:12%;"></th>
-								<th class="center" style="width:38%;">RIGHT <span v-html="n_right"></span> WORDS</th>
-								<th class="center" style="width:12%;"></th>
-							</tr>
-						</thead>
-						<tbody v-for="row in result.oneword">
-							<!-- insert table here -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
 
-</div>
+</div> <!----- END OF INPUT FORM ----->
+
+
+
+  {% block result %}
+
+  {% endblock%}
+
 
 <script type="text/javascript">
 
-  var vue = new Vue({
-		el:'#container_corpus',
-		data: {
-      mode: "word",
-      media: MEDIA,
-			lang_is_th: true,
-      input_word1: '',
-      input_word2: '',
-      n_left: '1',
-      n_right: '1',
-      use_multiple_words: false,
-      input_string1: '',
-      input_string2: '',
-      use_regex: false,      
-      sources: {
-        twitter: false,
-        matichon: false,
-        thairath: false,
-        dailynews: false,
-        NHK: false,
-        pantip: false
-      },
-      word_searching: false,
-      string_searching: false,
-      result: {
-        oneword: 0,
-        twoword: 0,
-        onestring: 0,
-        twostring: 0,
-      }
-		},
-		methods: {
-      select_lang: function(){
-        this.lang_is_th = !this.lang_is_th;
-        document.activeElement.blur();
-      },
-      copy_to_right: function(){
-        this.input_string1 = this.input_word1.replace(/\|/g, ''); // remove | for string search
-        this.input_string2 = this.input_word2.replace(/\|/g, '');
-      },
-      copy_to_left: function(){
-        this.input_word1 = this.input_string1;
-        this.input_word2 = this.input_string2;
-      },
-      select_all: function(){
-        for(var elem of document.querySelectorAll('.source')){
-          if(elem.style.opacity!=1){elem.click();}
-        }
-      },
-      unselect_all: function(){
-        for(var elem of document.querySelectorAll('.source')){
-          if(elem.style.opacity==1){elem.click();}
-        }
-      }
-		},
-    components: {
-      'source-button': {
-        data: function(){
-          return {is_selected: false, name: this.source_name}
-        },
-        template: `
-          <button type="button" class="btn btn-secondary source mb-1" v-if="is_selected" style="opacity: 1;" v-on:click="unselect()">{{source_name}}</button>
-          <button type="button" class="btn btn-secondary source mb-1" v-else style="opacity: 0.3;" v-on:click="select()">{{source_name}}</button>`,
-        props: ['source_name'],
-        methods: {
-          select: function(){
-            this.is_selected = true;
-            vue.sources[this.name] = true,
-            document.activeElement.blur();
-          },
-          unselect: function(){
-            this.is_selected = false;
-            vue.sources[this.name] = false;
-            document.activeElement.blur();
-          },
-        }
-      }
-    }
-	})
-
-  function start_ajax(mode){
-    // if no source is checked, alert
-    if(Object.values(vue.sources).every(x => x==false)){
-      alert("กรุณาเลือกแหล่งข้อมูล\nデータソースを選択して下さい"); return false;
-    }
-    // validate input form : mode = "word" or "string"
-    if(mode=="word" && vue.input_word1.trim()==""){
-      input_word1.focus(); return false;
-    }else if(mode=="string" && vue.input_string1.trim() == ""){
-      input_string1.focus(); return false;
-    }else{ // AJAX
-      $.ajax({
-        data : vue._data,
-        type: "POST",
-        dataType: "json",
-        cache: false,
-        timeout: 50000,
-        url : "/"
-      })
-    }
-  }
   mode_corpus.classList.add("active");
-  btn_twitter.click();
-  btn_matichon.click()
 </script>
 
 {% endblock %}

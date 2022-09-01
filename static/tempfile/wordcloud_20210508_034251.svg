@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1000">
+<style>text{font-family:'TH Sarabun New';font-weight:normal;font-style:normal;}</style>
+<rect width="100%" height="100%" style="fill:white"></rect>
+<text transform="translate(70,611)" font-size="511" style="fill:rgb(253, 194, 41)">เติมน้ำมัน</text>
+<text transform="translate(470,981)" font-size="427" style="fill:rgb(46, 5, 149)">ปั๊มน้ำมัน</text>
+<text transform="translate(13,124)" font-size="273" style="fill:rgb(251, 162, 56)">ราคาแพง</text>
+<text transform="translate(49,867)" font-size="273" style="fill:rgb(187, 52, 136)">ถัดไป</text>
+<text transform="translate(1193,216)" font-size="273" style="fill:rgb(148, 16, 162)">ถัง</text>
+<text transform="translate(828,279)" font-size="273" style="fill:rgb(247, 147, 66)">แก๊ส</text>
+<text transform="translate(325,215)" font-size="199" style="fill:rgb(249, 152, 62)">ระบาย</text>
+<text transform="translate(1269,360)" font-size="199" style="fill:rgb(254, 187, 43)">ไหม</text>
+</svg>

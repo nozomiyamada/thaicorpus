@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1000">
+<style>text{font-family:'TH Sarabun New';font-weight:normal;font-style:normal;}</style>
+<rect width="100%" height="100%" style="fill:white"></rect>
+<text transform="translate(308,326)" font-size="719" style="fill:rgb(189, 55, 134)">ลอง</text>
+<text transform="translate(66,949)" font-size="719" style="fill:rgb(182, 48, 139)">ค้นหา</text>
+<text transform="translate(823,496)" font-size="287" style="fill:rgb(167, 33, 151)">รูปแบบ</text>
+<text transform="translate(1057,311)" font-size="287" style="fill:rgb(252, 208, 37)">ให้ได้</text>
+<text transform="translate(354,638)" font-size="245" style="fill:rgb(213, 83, 111)">ผลลัพธ์</text>
+<text transform="translate(1443,986) rotate(-90)" font-size="245" style="fill:rgb(253, 195, 40)">มากขึ้น</text>
+<text transform="translate(10,624)" font-size="183" style="fill:rgb(32, 6, 143)">น้อยลง</text>
+</svg>
