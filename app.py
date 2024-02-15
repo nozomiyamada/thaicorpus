@@ -18,14 +18,18 @@ from PIL import Image
 from wordcloud import WordCloud
 from thaig2p import g2p, decode, clean
 
-app = Flask(__name__)
+### import corpus.py
+from corpus import *
 
-##### ENVIRONMENT VARIABLES #####
-from dotenv import load_dotenv
-load_dotenv()
-SQL_HOSTNAME = os.environ["SQL_HOSTNAME"]
-SQL_USERNAME = os.environ["SQL_USERNAME"]
-SQL_PASSWORD = os.environ["SQL_PASSWORD"]
+### instantiate app
+class CustomFlask(Flask):
+	jinja_options = Flask.jinja_options.copy()
+	jinja_options.update(dict(
+		variable_start_string='((',
+		variable_end_string='))',
+	))
+
+app = CustomFlask(__name__)
 
 
 @app.after_request
@@ -35,12 +39,12 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
-# web API https://thaicorpus.herokuapp.com/
-# 0. pip freeze > requirements.txt
-# 1. heroku login > heroku git:remote -a thaicorpus
-# 2. git add -A  => git commit -m update 
-# 3. git push heroku master
-# 4. heroku logs --tail
+##### ENVIRONMENT VARIABLES #####
+from dotenv import load_dotenv
+load_dotenv()
+SQL_HOSTNAME = os.environ["SQL_HOSTNAME"]
+SQL_USERNAME = os.environ["SQL_USERNAME"]
+SQL_PASSWORD = os.environ["SQL_PASSWORD"]
 
 ### word2vec
 #model_daily = KeyedVectors.load_word2vec_format('static/wv_daily.bin', unicode_errors='ignore', binary=True)
