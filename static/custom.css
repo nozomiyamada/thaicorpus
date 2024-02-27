@@ -31,7 +31,6 @@
 body{
 	font-family: 'Sarabun', 'M PLUS Rounded 1c', sans-serif, 'Baijam', 'Mali6', 'Kanit', 'Niramit','Chonburi';
 	scroll-behavior: smooth;
-	background-image:url("img/bg_autumn.png");
 	background-color:rgba(255, 255, 255, 0.7);
 	background-blend-mode:lighten;
 }

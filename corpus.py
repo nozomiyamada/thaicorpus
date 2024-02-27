@@ -4,14 +4,16 @@ import mysql.connector
 ##### ENVIRONMENT VARIABLES #####
 from dotenv import load_dotenv
 load_dotenv()
-SQL_HOSTNAME = os.environ["SQL_HOSTNAME"]
-SQL_USERNAME = os.environ["SQL_USERNAME"]
-SQL_PASSWORD = os.environ["SQL_PASSWORD"]
+SQL_HOSTNAME = os.environ["MYSQL_HOSTNAME"]
+SQL_USERNAME = os.environ["MYSQL_USERNAME"]
+SQL_PASSWORD = os.environ["MYSQL_PASSWORD"]
+SQL_PORT = os.environ["MYSQL_PORT"]
 
 def connect_sql(database="thaicorpus"):
     config = {'user': SQL_USERNAME,
         'password': SQL_PASSWORD,
         'host': SQL_HOSTNAME,
+        'port': SQL_PORT,
         'database': database} # name of database
     con = mysql.connector.connect(**config)
     cursor = con.cursor(buffered=True)

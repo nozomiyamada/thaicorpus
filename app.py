@@ -42,9 +42,6 @@ def after_request(response):
 ##### ENVIRONMENT VARIABLES #####
 from dotenv import load_dotenv
 load_dotenv()
-SQL_HOSTNAME = os.environ["SQL_HOSTNAME"]
-SQL_USERNAME = os.environ["SQL_USERNAME"]
-SQL_PASSWORD = os.environ["SQL_PASSWORD"]
 
 ### word2vec
 #model_daily = KeyedVectors.load_word2vec_format('static/wv_daily.bin', unicode_errors='ignore', binary=True)
@@ -417,18 +414,6 @@ def regex_page():
         except:
             print("Unexpected error:", sys.exc_info()[0])
             return jsonify({'bool':'ERROR'})
-
-
-#########################################################################################################
-
-def connect_sql(database="thaicorpus"):
-    config = {'user': SQL_USERNAME,
-        'password': SQL_PASSWORD,
-        'host': SQL_HOSTNAME,
-        'database': database} # name of database
-    con = mysql.connector.connect(**config)
-    cursor = con.cursor(buffered=True)
-    return con, cursor
 
 ################################################################################
 #####   SEARCH BY WORD FUNCTION

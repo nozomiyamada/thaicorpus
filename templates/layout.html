@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@non_tan" />
   <meta property="og:url" content="https://thaicorpus.herokuapp.com/" />
   <meta property="og:title" content="Thai Web Corpus" />
   <meta property="og:description" content="Thai Web Corpus" />
@@ -28,7 +27,7 @@
       var MEDIA = "tablet";
     }else{
       var MEDIA = "PC";
-    } 
+    }
   </script>
 </head>
 
@@ -94,7 +93,7 @@
       <div class="col-md-12">
       <!-- <h4>thanks for <a href="http://www.jtdic.com/" target="_blank">JTDic</a>, 
         <a href="http://www.arts.chula.ac.th/~ling/tnc3/" target="_blank">Thai National Corpus</a></h4> -->
-      &copy; 2021 <a href="https://nozomiyamada.github.io/index.html" target="_blank">Nozomi Yamada</a> All Rights Reserved. <a href="/data" target="_blank">Data Details</a>
+      &copy; 2024 <a href="https://nozomiyamada.github.io/index.html" target="_blank">Nozomi Yamada</a> All Rights Reserved. <a href="/data" target="_blank">Data Details</a><br>
       </div>
     </div>
   </div>
@@ -107,13 +106,23 @@
 <script type="text/javascript" src="static/corpus.js"></script> <!-- js for corpus mode -->
 <script src="static/vocab.js"></script> <!-- about 40000 words list -->
 <script type="text/javascript">
+  const today = new Date();
+    if([12,1,2].includes(today.getMonth()+1)){
+      document.body.style.backgroundImage = "url('static/img/bg_winter.png')";
+    }else if([3,4].includes(today.getMonth()+1)){
+      document.body.style.backgroundImage = "url('static/img/bg_spring.png')";
+    }
+  // set background
   window.onload = function(){
+    
+
     try{
       set_history();
       show_datasource();
     }catch{
     }
   }
+
   function show_hide(targetID){
 		let elem = document.getElementById(targetID);
 		if(elem.style.display=='none'){
@@ -122,6 +131,7 @@
 			$(elem).hide('fast');
 		}
 	}
+
   function validate_file(){ // for tokenize & wordcloud
 		if(input_file.files.length==0){ // no selected file
 			input_text.disabled = false;
